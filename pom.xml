@@ -10,6 +10,9 @@
 
     <modules>
         <module>aars-parent</module>
+        <module>aars-db</module>
+        <module>aars-api</module>
+        <module>aars-impl</module>
         <module>aars-application</module>
     </modules>
 
