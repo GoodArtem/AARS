@@ -1,0 +1,33 @@
+server:
+  address: 0.0.0.0
+  port: 8080
+spring:
+  profile:
+    active: default
+  application:
+    name: aars
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    password: "postgres"
+    username: "postgres"
+    dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
+    testOnBorrow: true
+    testWhileIdle: true
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: SELECT 1
+    max-active: 15
+    max-idle: 10
+    max-wait: 8000
+  flyway:
+    url: jdbc:postgresql://localhost:5432/postgres
+    schemas: public
+    user: "postgres"
+    password: "postgres"
+    enabled: true
+  jooq:
+    sql-dialect: Postgres
+
+management:
+  endpoints:
+    web.exposure.include: info, healt, env, loggers

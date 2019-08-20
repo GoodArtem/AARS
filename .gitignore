@@ -26,3 +26,6 @@ bin/
 /_maven-dependencies.bat
 /_run_quote_tmf_service.bat
 /_run_test.bat
+
+# Log
+*.log

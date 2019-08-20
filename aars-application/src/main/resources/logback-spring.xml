@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+<!--    <property name="LOG_FILE" value="LogFile" />-->
+<!--    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${LOG_FILE}.log</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash; daily rollover &ndash;&gt;-->
+<!--            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
+
+<!--            &lt;!&ndash; keep 30 days' worth of history capped at 3GB total size &ndash;&gt;-->
+<!--            <maxHistory>30</maxHistory>-->
+<!--            <totalSizeCap>300MB</totalSizeCap>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+<!--    <root level="debug">-->
+<!--        <appender-ref ref="STDOUT" />-->
+<!--    </root>-->
+</configuration>
