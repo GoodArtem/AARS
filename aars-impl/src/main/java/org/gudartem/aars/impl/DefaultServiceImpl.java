@@ -1,11 +1,45 @@
 package org.gudartem.aars.impl;
 
-import org.gudartem.aars.api.DefaultService;
+import org.gudartem.aars.api.CRUDService;
+import org.gudartem.aars.api.repository.Repository;
 import org.gudartem.aars.db.DatabaseConfiguration;
+import org.gudartem.aars.db.model.HasId;
 
-public class DefaultServiceImpl implements DefaultService {
+import java.io.Serializable;
+import java.util.Collection;
+
+public abstract class DefaultServiceImpl<Entity extends HasId, ID extends Serializable>
+        implements CRUDService<Entity, ID> {
+
+    protected abstract Repository<Entity, ID> getRepository();
+
     @Override
-    public void process() {
-        DatabaseConfiguration dbConf = new DatabaseConfiguration();
+    public Collection<Entity> getAll() {
+        return getRepository().findAll();
+    }
+
+    @Override
+    public Entity getById(ID id) {
+        return getRepository().findById(id);
+    }
+
+    @Override
+    public Entity create(Entity entityToCreate) {
+        return getRepository().insert(entityToCreate);
+    }
+
+    @Override
+    public Entity patch(Entity entityToPatch) {
+        return getRepository().update(entityToPatch);
+    }
+
+    @Override
+    public void delete(ID id) {
+        getRepository().deleteById(id);
+    }
+
+    @Override
+    public boolean existsById(ID id) {
+        return getRepository().existsById(id);
     }
 }

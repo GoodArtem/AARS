@@ -39,9 +39,9 @@ public class JooqConfiguration {
         return conf;
     }
 
-    @Bean("cimDslContext")
+    @Bean("aarsDslContext")
     @DependsOn(value = "jooqConfig")
-    @Qualifier("cimDslContext")
+    @Qualifier("aarsDslContext")
     public DSLContext dsl(@Autowired @Qualifier("jooqConfig") org.jooq.Configuration configuration) {
         DSLContext context = new DefaultDSLContext(configuration);
         context.settings().setRenderNameStyle(RenderNameStyle.LOWER);

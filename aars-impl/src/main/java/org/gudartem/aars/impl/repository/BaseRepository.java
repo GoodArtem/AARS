@@ -7,13 +7,15 @@ import org.gudartem.aars.db.model.HasId;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
-import org.jooq.Result;
 import org.jooq.UpdatableRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toSet;
 
 public abstract class BaseRepository<T extends HasId, ID extends Serializable> implements Repository<T, ID> {
 
@@ -21,7 +23,7 @@ public abstract class BaseRepository<T extends HasId, ID extends Serializable> i
     protected TableDescriptorBuilder tableDescriptorBuilder;
 
     @Autowired
-    @Qualifier("cimDslContext")
+    @Qualifier("aarsDslContext")
     private DSLContext context;
 
     public abstract TableDescriptor getTableDescriptor();
@@ -86,12 +88,25 @@ public abstract class BaseRepository<T extends HasId, ID extends Serializable> i
 
     protected <S extends T> void preUpdate(S entity, UpdatableRecord record) {
         if (entity.getNullFields() != null && !entity.getNullFields().isEmpty()) {
-
+            for (Field<?> field : record.fields()) {
+                if (isNotManuallySetToNull(field, record, propertyNamesToField(entity.getNullFields()))) {
+                    record.changed(field, false);
+                }
+            }
         }
     }
 
     protected <S extends T> S postUpdate(S entity) {
         return entity;
+    }
+
+    private Collection<String> propertyNamesToField(final Collection<String> properties) {
+        Map<String, Field> mapping = getTableDescriptor().getPropertyFieldMapping();
+        return properties.stream().peek(f -> {
+            if (!mapping.containsKey(f)) {
+                // TODO: create exception for unprocessed fields
+            }
+        }).map(property -> mapping.get(property).getUnqualifiedName().toString()).collect(toSet());
     }
 
     private boolean isNotManuallySetToNull(final Field field, final Record record, final Collection<String> nullFields) {
