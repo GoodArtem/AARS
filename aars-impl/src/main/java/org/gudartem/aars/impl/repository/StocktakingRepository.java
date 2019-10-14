@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.gudartem.aars.api.repository.RepositoryName.STOCKTAKING_REPOSITORY;
 import static org.gudartem.aars.db.constants.ColumnName.HasId.ID;
 import static org.gudartem.aars.db.constants.ColumnName.HasInventoryCardId.INVENTORY_CARD_ID;
 import static org.gudartem.aars.db.constants.ColumnName.HasRevision.REVISION;
@@ -18,7 +19,7 @@ import static org.gudartem.aars.db.constants.ColumnName.Stocktaking.DATE_CHANGIN
 import static org.gudartem.aars.db.constants.ColumnName.Stocktaking.DOC_NUMBER;
 import static org.gudartem.aars.db.jooq.Tables.STOCKTAKING;
 
-@Repository("stocktakingRepository")
+@Repository(STOCKTAKING_REPOSITORY)
 public class StocktakingRepository extends BaseRepository<Stocktaking, UUID> {
 
     private TableDescriptor tableDescriptor;

@@ -13,6 +13,7 @@
         <module>aars-db</module>
         <module>aars-api</module>
         <module>aars-impl</module>
+        <module>aars-model</module>
         <module>aars-application</module>
     </modules>
 

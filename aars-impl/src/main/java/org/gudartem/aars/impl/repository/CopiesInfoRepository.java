@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.gudartem.aars.api.repository.RepositoryName.COPIES_INFO_REPOSITORY;
 import static org.gudartem.aars.db.constants.ColumnName.CopiesInfo.ANNULLED_COPY;
 import static org.gudartem.aars.db.constants.ColumnName.CopiesInfo.COPY_DATE;
 import static org.gudartem.aars.db.constants.ColumnName.CopiesInfo.DESIGNATION;
@@ -19,7 +20,7 @@ import static org.gudartem.aars.db.constants.ColumnName.HasInventoryCardId.INVEN
 import static org.gudartem.aars.db.constants.ColumnName.HasRevision.REVISION;
 import static org.gudartem.aars.db.jooq.Tables.COPIES_INFO;
 
-@Repository("copiesInfoRepository")
+@Repository(COPIES_INFO_REPOSITORY)
 public class CopiesInfoRepository extends BaseRepository<CopiesInfo, UUID> {
 
     private TableDescriptor tableDescriptor;

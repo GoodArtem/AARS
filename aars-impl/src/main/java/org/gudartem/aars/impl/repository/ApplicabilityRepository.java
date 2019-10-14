@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.gudartem.aars.api.repository.RepositoryName.APPLICABILITY_REPOSITORY;
 import static org.gudartem.aars.db.constants.ColumnName.Applicability.APPLICABILITY_DATE;
 import static org.gudartem.aars.db.constants.ColumnName.Applicability.APP_INVENTORY_CARD_ID;
 import static org.gudartem.aars.db.constants.ColumnName.Applicability.CIPHER;
@@ -18,7 +19,7 @@ import static org.gudartem.aars.db.constants.ColumnName.HasInventoryCardId.INVEN
 import static org.gudartem.aars.db.constants.ColumnName.HasRevision.REVISION;
 import static org.gudartem.aars.db.jooq.Tables.APPLICABILITY;
 
-@Repository("applicabilityRepository")
+@Repository(APPLICABILITY_REPOSITORY)
 public class ApplicabilityRepository extends BaseRepository<Applicability, UUID> {
 
     private TableDescriptor tableDescriptor;

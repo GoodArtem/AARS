@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.gudartem.aars.api.repository.RepositoryName.THEME_REPOSITORY;
 import static org.gudartem.aars.db.constants.ColumnName.HasId.ID;
 import static org.gudartem.aars.db.constants.ColumnName.HasRevision.REVISION;
 import static org.gudartem.aars.db.constants.ColumnName.Theme.ARCHIVE_DATE;
@@ -17,7 +18,7 @@ import static org.gudartem.aars.db.constants.ColumnName.Theme.HAS_CHANGES;
 import static org.gudartem.aars.db.constants.ColumnName.Theme.THEME_NAME;
 import static org.gudartem.aars.db.jooq.Tables.THEME;
 
-@Repository("themeRepository")
+@Repository(THEME_REPOSITORY)
 public class ThemeRepository extends BaseRepository<Theme, UUID> {
 
     private TableDescriptor tableDescriptor;

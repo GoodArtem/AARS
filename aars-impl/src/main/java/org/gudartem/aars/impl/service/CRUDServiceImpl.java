@@ -1,14 +1,13 @@
-package org.gudartem.aars.impl;
+package org.gudartem.aars.impl.service;
 
-import org.gudartem.aars.api.CRUDService;
+import org.gudartem.aars.api.service.CRUDService;
 import org.gudartem.aars.api.repository.Repository;
-import org.gudartem.aars.db.DatabaseConfiguration;
 import org.gudartem.aars.db.model.HasId;
 
 import java.io.Serializable;
 import java.util.Collection;
 
-public abstract class DefaultServiceImpl<Entity extends HasId, ID extends Serializable>
+public abstract class CRUDServiceImpl<Entity extends HasId, ID extends Serializable>
         implements CRUDService<Entity, ID> {
 
     protected abstract Repository<Entity, ID> getRepository();

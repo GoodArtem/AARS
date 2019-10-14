@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.gudartem.aars.api.repository.RepositoryName.ONCE_ONLY_ISSUE_REPOSITORY;
 import static org.gudartem.aars.db.constants.ColumnName.HasId.ID;
 import static org.gudartem.aars.db.constants.ColumnName.HasInventoryCardId.INVENTORY_CARD_ID;
 import static org.gudartem.aars.db.constants.ColumnName.HasRevision.REVISION;
@@ -18,7 +19,7 @@ import static org.gudartem.aars.db.constants.ColumnName.OnceOnlyIssue.ISSUE_DATE
 import static org.gudartem.aars.db.constants.ColumnName.OnceOnlyIssue.TO_WHOM;
 import static org.gudartem.aars.db.jooq.Tables.ONCE_ONLY_ISSUE;
 
-@Repository("onceOnlyIssueRepository")
+@Repository(ONCE_ONLY_ISSUE_REPOSITORY)
 public class OnceOnlyIssueRepository extends BaseRepository<OnceOnlyIssue, UUID> {
 
     private TableDescriptor tableDescriptor;

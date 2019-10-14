@@ -1,4 +1,4 @@
-package org.gudartem.aars.api;
+package org.gudartem.aars.api.service;
 
 import org.gudartem.aars.db.model.HasId;
 
