@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.DIRECTORY_REPOSITORY;
-import static org.gudartem.aars.db.constants.ColumnName.Directory.DIRECTORY_NAME;
-import static org.gudartem.aars.db.constants.ColumnName.Directory.DIRECTORY_TYPE;
-import static org.gudartem.aars.db.constants.ColumnName.Directory.PARENT_ID;
-import static org.gudartem.aars.db.constants.ColumnName.HasId.ID;
-import static org.gudartem.aars.db.constants.ColumnName.HasThemeId.THEME_ID;
+import static org.gudartem.aars.model.PojoFieldNames.Directory.DIRECTORY_NAME;
+import static org.gudartem.aars.model.PojoFieldNames.Directory.DIRECTORY_TYPE;
+import static org.gudartem.aars.model.PojoFieldNames.Directory.PARENT_ID;
+import static org.gudartem.aars.model.PojoFieldNames.HasId.ID;
+import static org.gudartem.aars.model.PojoFieldNames.HasThemeId.THEME_ID;
 import static org.gudartem.aars.db.jooq.Tables.DIRECTORY;
-import static org.gudartem.aars.db.constants.ColumnName.HasRevision.REVISION;
+import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
 
 @Repository(DIRECTORY_REPOSITORY)
 public class DirectoryRepository extends BaseRepository<Directory, UUID> {

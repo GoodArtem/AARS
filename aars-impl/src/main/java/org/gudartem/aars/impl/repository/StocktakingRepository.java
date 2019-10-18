@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.STOCKTAKING_REPOSITORY;
-import static org.gudartem.aars.db.constants.ColumnName.HasId.ID;
-import static org.gudartem.aars.db.constants.ColumnName.HasInventoryCardId.INVENTORY_CARD_ID;
-import static org.gudartem.aars.db.constants.ColumnName.HasRevision.REVISION;
-import static org.gudartem.aars.db.constants.ColumnName.Stocktaking.CHANGED_SHEETS;
-import static org.gudartem.aars.db.constants.ColumnName.Stocktaking.CHANGING;
-import static org.gudartem.aars.db.constants.ColumnName.Stocktaking.DATE_CHANGING;
-import static org.gudartem.aars.db.constants.ColumnName.Stocktaking.DOC_NUMBER;
+import static org.gudartem.aars.model.PojoFieldNames.HasId.ID;
+import static org.gudartem.aars.model.PojoFieldNames.HasInventoryCardId.INVENTORY_CARD_ID;
+import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
+import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.CHANGED_SHEETS;
+import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.CHANGING;
+import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.DATE_CHANGING;
+import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.DOC_NUMBER;
 import static org.gudartem.aars.db.jooq.Tables.STOCKTAKING;
 
 @Repository(STOCKTAKING_REPOSITORY)

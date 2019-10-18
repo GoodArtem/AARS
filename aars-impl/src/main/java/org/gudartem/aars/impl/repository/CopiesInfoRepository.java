@@ -10,14 +10,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.COPIES_INFO_REPOSITORY;
-import static org.gudartem.aars.db.constants.ColumnName.CopiesInfo.ANNULLED_COPY;
-import static org.gudartem.aars.db.constants.ColumnName.CopiesInfo.COPY_DATE;
-import static org.gudartem.aars.db.constants.ColumnName.CopiesInfo.DESIGNATION;
-import static org.gudartem.aars.db.constants.ColumnName.CopiesInfo.EMPLOYEE_ID;
-import static org.gudartem.aars.db.constants.ColumnName.CopiesInfo.RECEIVED_COPY;
-import static org.gudartem.aars.db.constants.ColumnName.HasId.ID;
-import static org.gudartem.aars.db.constants.ColumnName.HasInventoryCardId.INVENTORY_CARD_ID;
-import static org.gudartem.aars.db.constants.ColumnName.HasRevision.REVISION;
+import static org.gudartem.aars.model.PojoFieldNames.CopiesInfo.ANNULLED_COPY;
+import static org.gudartem.aars.model.PojoFieldNames.CopiesInfo.COPY_DATE;
+import static org.gudartem.aars.model.PojoFieldNames.CopiesInfo.DESIGNATION;
+import static org.gudartem.aars.model.PojoFieldNames.CopiesInfo.EMPLOYEE_ID;
+import static org.gudartem.aars.model.PojoFieldNames.CopiesInfo.RECEIVED_COPY;
+import static org.gudartem.aars.model.PojoFieldNames.HasId.ID;
+import static org.gudartem.aars.model.PojoFieldNames.HasInventoryCardId.INVENTORY_CARD_ID;
+import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
 import static org.gudartem.aars.db.jooq.Tables.COPIES_INFO;
 
 @Repository(COPIES_INFO_REPOSITORY)

@@ -27,6 +27,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.gudartem</groupId>
+            <artifactId>aars-model</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jooq</artifactId>
         </dependency>

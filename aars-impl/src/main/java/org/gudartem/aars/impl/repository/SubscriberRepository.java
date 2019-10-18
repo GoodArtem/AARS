@@ -10,14 +10,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.SUBSCRIBER_REPOSITORY;
-import static org.gudartem.aars.db.constants.ColumnName.HasId.ID;
-import static org.gudartem.aars.db.constants.ColumnName.HasRevision.REVISION;
-import static org.gudartem.aars.db.constants.ColumnName.HasThemeId.THEME_ID;
-import static org.gudartem.aars.db.constants.ColumnName.Subscriber.ANNULLED;
-import static org.gudartem.aars.db.constants.ColumnName.Subscriber.DESIGNATION;
-import static org.gudartem.aars.db.constants.ColumnName.Subscriber.EX_NUMBER;
-import static org.gudartem.aars.db.constants.ColumnName.Subscriber.SUBSCRIBER_NAME;
-import static org.gudartem.aars.db.constants.ColumnName.Subscriber.SUBSCRIBE_DATE;
+import static org.gudartem.aars.model.PojoFieldNames.HasId.ID;
+import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
+import static org.gudartem.aars.model.PojoFieldNames.HasThemeId.THEME_ID;
+import static org.gudartem.aars.model.PojoFieldNames.Subscriber.ANNULLED;
+import static org.gudartem.aars.model.PojoFieldNames.Subscriber.DESIGNATION;
+import static org.gudartem.aars.model.PojoFieldNames.Subscriber.EX_NUMBER;
+import static org.gudartem.aars.model.PojoFieldNames.Subscriber.SUBSCRIBER_NAME;
+import static org.gudartem.aars.model.PojoFieldNames.Subscriber.SUBSCRIBE_DATE;
 import static org.gudartem.aars.db.jooq.Tables.SUBSCRIBER;
 
 @Repository(SUBSCRIBER_REPOSITORY)

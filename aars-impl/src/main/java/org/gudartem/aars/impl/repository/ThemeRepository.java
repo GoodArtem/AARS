@@ -10,12 +10,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.THEME_REPOSITORY;
-import static org.gudartem.aars.db.constants.ColumnName.HasId.ID;
-import static org.gudartem.aars.db.constants.ColumnName.HasRevision.REVISION;
-import static org.gudartem.aars.db.constants.ColumnName.Theme.ARCHIVE_DATE;
-import static org.gudartem.aars.db.constants.ColumnName.Theme.CIPHER;
-import static org.gudartem.aars.db.constants.ColumnName.Theme.HAS_CHANGES;
-import static org.gudartem.aars.db.constants.ColumnName.Theme.THEME_NAME;
+import static org.gudartem.aars.model.PojoFieldNames.HasId.ID;
+import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
+import static org.gudartem.aars.model.PojoFieldNames.Theme.ARCHIVE_DATE;
+import static org.gudartem.aars.model.PojoFieldNames.Theme.CIPHER;
+import static org.gudartem.aars.model.PojoFieldNames.Theme.HAS_CHANGES;
+import static org.gudartem.aars.model.PojoFieldNames.Theme.THEME_NAME;
 import static org.gudartem.aars.db.jooq.Tables.THEME;
 
 @Repository(THEME_REPOSITORY)
