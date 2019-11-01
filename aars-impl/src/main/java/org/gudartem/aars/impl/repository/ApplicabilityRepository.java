@@ -1,10 +1,12 @@
 package org.gudartem.aars.impl.repository;
 
+import org.gudartem.aars.api.repository.HasInventoryCardIdRepository;
 import org.gudartem.aars.api.repository.TableDescriptor;
 import org.gudartem.aars.db.model.entity.Applicability;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -20,7 +22,9 @@ import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
 import static org.gudartem.aars.db.jooq.Tables.APPLICABILITY;
 
 @Repository(APPLICABILITY_REPOSITORY)
-public class ApplicabilityRepository extends BaseRepository<Applicability, UUID> {
+public class ApplicabilityRepository
+        extends BaseRepository<Applicability, UUID>
+        implements HasInventoryCardIdRepository<Applicability, UUID> {
 
     private TableDescriptor tableDescriptor;
 
@@ -46,5 +50,10 @@ public class ApplicabilityRepository extends BaseRepository<Applicability, UUID>
                 .build();
 
         return tableDescriptor;
+    }
+
+    @Override
+    public Collection<Applicability> getAllByInvCardId(UUID inventoryCardId) {
+        return findAll(APPLICABILITY.INVENTORY_CARD_ID.eq(inventoryCardId));
     }
 }

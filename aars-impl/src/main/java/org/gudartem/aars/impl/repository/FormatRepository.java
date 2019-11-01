@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.FORMAT_REPOSITORY;
-import static org.gudartem.aars.model.PojoFieldNames.Employee.EMPLOYEE_NAME;
+import static org.gudartem.aars.model.PojoFieldNames.Format.FORMAT_NAME;
 import static org.gudartem.aars.model.PojoFieldNames.HasId.ID;
 import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
 import static org.gudartem.aars.db.jooq.Tables.FORMAT;
@@ -29,7 +29,7 @@ public class FormatRepository extends BaseRepository<Format, UUID> {
         Map<String, Field> mapping = new HashMap<>();
         mapping.put(ID, FORMAT.ID);
         mapping.put(REVISION, FORMAT.REVISION);
-        mapping.put(EMPLOYEE_NAME, FORMAT.FORMAT_NAME);
+        mapping.put(FORMAT_NAME, FORMAT.FORMAT_NAME);
 
         tableDescriptor = tableDescriptorBuilder.table(FORMAT)
                 .idField(FORMAT.ID)

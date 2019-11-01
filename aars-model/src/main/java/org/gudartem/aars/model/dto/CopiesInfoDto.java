@@ -5,6 +5,12 @@ import org.gudartem.aars.model.abstraction.BaseInventoryCardIdDto;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import static org.gudartem.aars.model.PojoFieldNames.CopiesInfo.ANNULLED_COPY;
+import static org.gudartem.aars.model.PojoFieldNames.CopiesInfo.COPY_DATE;
+import static org.gudartem.aars.model.PojoFieldNames.CopiesInfo.DESIGNATION;
+import static org.gudartem.aars.model.PojoFieldNames.CopiesInfo.EMPLOYEE_ID;
+import static org.gudartem.aars.model.PojoFieldNames.CopiesInfo.RECEIVED_COPY;
+
 public class CopiesInfoDto extends BaseInventoryCardIdDto<UUID> {
 
     private OffsetDateTime copyDate;
@@ -23,6 +29,7 @@ public class CopiesInfoDto extends BaseInventoryCardIdDto<UUID> {
 
     public void setCopyDate(OffsetDateTime copyDate) {
         this.copyDate = copyDate;
+        addNullField(COPY_DATE, copyDate);
     }
 
     public Integer getReceivedCopy() {
@@ -31,6 +38,7 @@ public class CopiesInfoDto extends BaseInventoryCardIdDto<UUID> {
 
     public void setReceivedCopy(Integer receivedCopy) {
         this.receivedCopy = receivedCopy;
+        addNullField(RECEIVED_COPY, receivedCopy);
     }
 
     public String getAnnulledCopy() {
@@ -39,6 +47,7 @@ public class CopiesInfoDto extends BaseInventoryCardIdDto<UUID> {
 
     public void setAnnulledCopy(String annulledCopy) {
         this.annulledCopy = annulledCopy;
+        addNullField(ANNULLED_COPY, annulledCopy);
     }
 
     public String getDesignation() {
@@ -47,6 +56,7 @@ public class CopiesInfoDto extends BaseInventoryCardIdDto<UUID> {
 
     public void setDesignation(String designation) {
         this.designation = designation;
+        addNullField(DESIGNATION, designation);
     }
 
     public UUID getEmployeeId() {
@@ -55,5 +65,6 @@ public class CopiesInfoDto extends BaseInventoryCardIdDto<UUID> {
 
     public void setEmployeeId(UUID employeeId) {
         this.employeeId = employeeId;
+        addNullField(EMPLOYEE_ID, employeeId);
     }
 }

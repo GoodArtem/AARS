@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS public.directory (
 	old_parent_id int4 NULL,
 	CONSTRAINT directory_pk PRIMARY KEY (id),
 	CONSTRAINT directory_fk FOREIGN KEY (parent_id) REFERENCES directory(id) ON DELETE CASCADE,
-	CONSTRAINT directory_fk_1 FOREIGN KEY (theme_id) REFERENCES theme(id) ON DELETE SET NULL
+	CONSTRAINT directory_fk_1 FOREIGN KEY (theme_id) REFERENCES theme(id) ON DELETE CASCADE
 );
 
 -- Drop table
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS public.applicability (
 	old_inventory_card_id int4 NULL,
 	old_app_inventory_card_id int4 NULL,
 	CONSTRAINT applicability_pk PRIMARY KEY (id),
-	CONSTRAINT applicability_fk FOREIGN KEY (inventory_card_id) REFERENCES inventory_card(id) ON DELETE SET NULL,
+	CONSTRAINT applicability_fk FOREIGN KEY (inventory_card_id) REFERENCES inventory_card(id) ON DELETE CASCADE,
 	CONSTRAINT applicability_fk_1 FOREIGN KEY (app_inventory_card_id) REFERENCES inventory_card(id) ON DELETE SET NULL
 );
 
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS public.copies_info (
 	old_inventory_card_id int4 NULL,
 	old_employee_id int4 NULL,
 	CONSTRAINT copies_info_pk PRIMARY KEY (id),
-	CONSTRAINT copies_info_fk FOREIGN KEY (inventory_card_id) REFERENCES inventory_card(id) ON DELETE SET NULL,
+	CONSTRAINT copies_info_fk FOREIGN KEY (inventory_card_id) REFERENCES inventory_card(id) ON DELETE CASCADE,
 	CONSTRAINT copies_info_fk_1 FOREIGN KEY (employee_id) REFERENCES employee(id) ON DELETE SET NULL
 );
 
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS public.once_only_issue (
 	old_id int4 NOT NULL,
 	old_inventory_card_id int4 NULL,
 	CONSTRAINT once_only_issue_pk PRIMARY KEY (id),
-	CONSTRAINT once_only_issue_fk FOREIGN KEY (inventory_card_id) REFERENCES inventory_card(id) ON DELETE SET NULL
+	CONSTRAINT once_only_issue_fk FOREIGN KEY (inventory_card_id) REFERENCES inventory_card(id) ON DELETE CASCADE
 );
 
 -- Drop table
@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS public.stocktaking (
 	old_id int4 NOT NULL,
 	old_inventory_card_id int4 NULL,
 	CONSTRAINT stocktaking_pk PRIMARY KEY (id),
-	CONSTRAINT stocktaking_fk FOREIGN KEY (inventory_card_id) REFERENCES inventory_card(id) ON DELETE SET NULL
+	CONSTRAINT stocktaking_fk FOREIGN KEY (inventory_card_id) REFERENCES inventory_card(id) ON DELETE CASCADE
 );
 
 -- Drop table
@@ -197,5 +197,5 @@ CREATE TABLE IF NOT EXISTS public.subscriber (
 	old_id int4 NOT NULL,
 	old_theme_id int4 NULL,
 	CONSTRAINT subscriber_pk PRIMARY KEY (id),
-	CONSTRAINT subscriber_fk FOREIGN KEY (theme_id) REFERENCES theme(id) ON DELETE SET NULL
+	CONSTRAINT subscriber_fk FOREIGN KEY (theme_id) REFERENCES theme(id) ON DELETE CASCADE
 );

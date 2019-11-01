@@ -1,10 +1,12 @@
 package org.gudartem.aars.impl.repository;
 
+import org.gudartem.aars.api.repository.HasThemeIdRepository;
 import org.gudartem.aars.api.repository.TableDescriptor;
 import org.gudartem.aars.db.model.entity.Directory;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -19,7 +21,9 @@ import static org.gudartem.aars.db.jooq.Tables.DIRECTORY;
 import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
 
 @Repository(DIRECTORY_REPOSITORY)
-public class DirectoryRepository extends BaseRepository<Directory, UUID> {
+public class DirectoryRepository
+        extends BaseRepository<Directory, UUID>
+        implements HasThemeIdRepository<Directory, UUID> {
 
     private TableDescriptor tableDescriptor;
 
@@ -44,5 +48,10 @@ public class DirectoryRepository extends BaseRepository<Directory, UUID> {
                 .build();
 
         return tableDescriptor;
+    }
+
+    @Override
+    public Collection<Directory> getAllByThemeId(UUID themeId) {
+        return findAll(DIRECTORY.THEME_ID.eq(themeId));
     }
 }

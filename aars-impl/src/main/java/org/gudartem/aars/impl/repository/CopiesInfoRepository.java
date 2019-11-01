@@ -1,10 +1,12 @@
 package org.gudartem.aars.impl.repository;
 
+import org.gudartem.aars.api.repository.HasInventoryCardIdRepository;
 import org.gudartem.aars.api.repository.TableDescriptor;
 import org.gudartem.aars.db.model.entity.CopiesInfo;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -21,7 +23,9 @@ import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
 import static org.gudartem.aars.db.jooq.Tables.COPIES_INFO;
 
 @Repository(COPIES_INFO_REPOSITORY)
-public class CopiesInfoRepository extends BaseRepository<CopiesInfo, UUID> {
+public class CopiesInfoRepository
+        extends BaseRepository<CopiesInfo, UUID>
+        implements HasInventoryCardIdRepository<CopiesInfo, UUID> {
 
     private TableDescriptor tableDescriptor;
 
@@ -48,5 +52,10 @@ public class CopiesInfoRepository extends BaseRepository<CopiesInfo, UUID> {
                 .build();
 
         return tableDescriptor;
+    }
+
+    @Override
+    public Collection<CopiesInfo> getAllByInvCardId(UUID inventoryCardId) {
+        return findAll(COPIES_INFO.INVENTORY_CARD_ID.eq(inventoryCardId));
     }
 }

@@ -20,4 +20,6 @@ public interface RepositoryName {
     String SUBSCRIBER_REPOSITORY = "subscriberRepository";
 
     String THEME_REPOSITORY = "themeRepository";
+
+    String CARD_TO_FORMAT_REPOSITORY = "cardToFormatRepository";
 }

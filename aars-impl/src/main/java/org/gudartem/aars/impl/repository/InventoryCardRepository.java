@@ -1,10 +1,12 @@
 package org.gudartem.aars.impl.repository;
 
+import org.gudartem.aars.api.repository.HasThemeIdRepository;
 import org.gudartem.aars.api.repository.TableDescriptor;
 import org.gudartem.aars.db.model.entity.InventoryCard;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -34,7 +36,9 @@ import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.VTD;
 import static org.gudartem.aars.db.jooq.Tables.INVENTORY_CARD;
 
 @Repository(INVENTORY_CARD_REPOSITORY)
-public class InventoryCardRepository extends BaseRepository<InventoryCard, UUID> {
+public class InventoryCardRepository
+        extends BaseRepository<InventoryCard, UUID>
+        implements HasThemeIdRepository<InventoryCard, UUID> {
 
     private TableDescriptor tableDescriptor;
 
@@ -74,5 +78,10 @@ public class InventoryCardRepository extends BaseRepository<InventoryCard, UUID>
                 .build();
 
         return tableDescriptor;
+    }
+
+    @Override
+    public Collection<InventoryCard> getAllByThemeId(UUID themeId) {
+        return findAll(INVENTORY_CARD.THEME_ID.eq(themeId));
     }
 }

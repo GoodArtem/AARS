@@ -5,6 +5,11 @@ import org.gudartem.aars.model.abstraction.BaseInventoryCardIdDto;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import static org.gudartem.aars.model.PojoFieldNames.OnceOnlyIssue.DESIGNATION;
+import static org.gudartem.aars.model.PojoFieldNames.OnceOnlyIssue.EX_NUMBER;
+import static org.gudartem.aars.model.PojoFieldNames.OnceOnlyIssue.ISSUE_DATE;
+import static org.gudartem.aars.model.PojoFieldNames.OnceOnlyIssue.TO_WHOM;
+
 public class OnceOnlyIssueDto extends BaseInventoryCardIdDto<UUID> {
 
     private OffsetDateTime issueDate;
@@ -21,6 +26,7 @@ public class OnceOnlyIssueDto extends BaseInventoryCardIdDto<UUID> {
 
     public void setIssueDate(OffsetDateTime issueDate) {
         this.issueDate = issueDate;
+        addNullField(ISSUE_DATE, issueDate);
     }
 
     public String getExNumber() {
@@ -29,6 +35,7 @@ public class OnceOnlyIssueDto extends BaseInventoryCardIdDto<UUID> {
 
     public void setExNumber(String exNumber) {
         this.exNumber = exNumber;
+        addNullField(EX_NUMBER, exNumber);
     }
 
     public String getDesignation() {
@@ -37,6 +44,7 @@ public class OnceOnlyIssueDto extends BaseInventoryCardIdDto<UUID> {
 
     public void setDesignation(String designation) {
         this.designation = designation;
+        addNullField(DESIGNATION, designation);
     }
 
     public String getToWhom() {
@@ -45,5 +53,6 @@ public class OnceOnlyIssueDto extends BaseInventoryCardIdDto<UUID> {
 
     public void setToWhom(String toWhom) {
         this.toWhom = toWhom;
+        addNullField(TO_WHOM, toWhom);
     }
 }

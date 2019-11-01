@@ -1,10 +1,12 @@
 package org.gudartem.aars.impl.repository;
 
+import org.gudartem.aars.api.repository.HasThemeIdRepository;
 import org.gudartem.aars.api.repository.TableDescriptor;
 import org.gudartem.aars.db.model.entity.Subscriber;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -21,7 +23,9 @@ import static org.gudartem.aars.model.PojoFieldNames.Subscriber.SUBSCRIBE_DATE;
 import static org.gudartem.aars.db.jooq.Tables.SUBSCRIBER;
 
 @Repository(SUBSCRIBER_REPOSITORY)
-public class SubscriberRepository extends BaseRepository<Subscriber, UUID> {
+public class SubscriberRepository
+        extends BaseRepository<Subscriber, UUID>
+        implements HasThemeIdRepository<Subscriber, UUID> {
 
     private TableDescriptor tableDescriptor;
 
@@ -48,5 +52,10 @@ public class SubscriberRepository extends BaseRepository<Subscriber, UUID> {
                 .build();
 
         return tableDescriptor;
+    }
+
+    @Override
+    public Collection<Subscriber> getAllByThemeId(UUID themeId) {
+        return findAll(SUBSCRIBER.THEME_ID.eq(themeId));
     }
 }

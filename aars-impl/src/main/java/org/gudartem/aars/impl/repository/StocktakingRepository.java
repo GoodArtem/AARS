@@ -1,10 +1,12 @@
 package org.gudartem.aars.impl.repository;
 
+import org.gudartem.aars.api.repository.HasInventoryCardIdRepository;
 import org.gudartem.aars.api.repository.TableDescriptor;
 import org.gudartem.aars.db.model.entity.Stocktaking;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -20,7 +22,9 @@ import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.DOC_NUMBER;
 import static org.gudartem.aars.db.jooq.Tables.STOCKTAKING;
 
 @Repository(STOCKTAKING_REPOSITORY)
-public class StocktakingRepository extends BaseRepository<Stocktaking, UUID> {
+public class StocktakingRepository
+        extends BaseRepository<Stocktaking, UUID>
+        implements HasInventoryCardIdRepository<Stocktaking, UUID> {
 
     private TableDescriptor tableDescriptor;
 
@@ -46,5 +50,10 @@ public class StocktakingRepository extends BaseRepository<Stocktaking, UUID> {
                 .build();
 
         return tableDescriptor;
+    }
+
+    @Override
+    public Collection<Stocktaking> getAllByInvCardId(UUID inventoryCardId) {
+        return findAll(STOCKTAKING.INVENTORY_CARD_ID.eq(inventoryCardId));
     }
 }

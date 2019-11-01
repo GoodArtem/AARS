@@ -1,7 +1,9 @@
 package org.gudartem.aars.model.abstraction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.gudartem.aars.model.HasId;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,13 +34,26 @@ public class BaseDto<T> implements HasId<T> {
         this.revision = revision;
     }
 
+    @JsonIgnore
     @Override
     public Set<String> getNullFields() {
-        return null;
+        return nullFields;
     }
 
     @Override
     public void setNullFields(Set<String> nullFields) {
         this.nullFields = nullFields;
+    }
+
+    protected void addNullField(String fieldName, Object fieldValue) {
+        if (fieldValue == null) {
+            getNullFields().add(fieldName);
+        }
+    }
+
+    protected void addNullField(String fieldName, Collection fieldValue) {
+        if (fieldValue == null || fieldValue.isEmpty()) {
+            getNullFields().add(fieldName);
+        }
     }
 }

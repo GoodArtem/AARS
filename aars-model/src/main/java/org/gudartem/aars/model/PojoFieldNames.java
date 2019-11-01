@@ -64,11 +64,12 @@ public class PojoFieldNames {
         public static final String VOPTK = "voptk";
         public static final String OKUFSB = "okufsb";
         public static final String OKUFREG = "okufreg";
-        public static final String CARD_TYPE = "card_type";
-        public static final String CARD_DATE = "card_date";
+        public static final String CARD_TYPE = "cardType";
+        public static final String CARD_DATE = "cardDate";
         public static final String STATE = "state";
         public static final String ANNULLED_DATE = "annulledDate";
         public static final String DIRECTORY_ID = "directoryId";
+        public static final String FORMAT_SET = "formatSet";
     }
 
     public static class OnceOnlyIssue implements HasId, HasInventoryCardId, HasRevision {

@@ -5,7 +5,7 @@ import org.gudartem.aars.db.model.HasId;
 import java.io.Serializable;
 import java.util.Collection;
 
-public interface CRUDService<E extends HasId, ID extends Serializable> {
+public interface CRUDService<E extends HasId<ID>, ID extends Serializable> {
 
     Collection<E> getAll();
 

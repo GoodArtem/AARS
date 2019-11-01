@@ -49,7 +49,7 @@ public abstract class AbstractHasId<T> implements HasId<T> {
     @JsonIgnore
     @Override
     public Set<String> getNullFields() {
-        return null;
+        return nullFields;
     }
 
     @Override

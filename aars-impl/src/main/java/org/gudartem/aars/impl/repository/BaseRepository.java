@@ -4,6 +4,7 @@ import org.gudartem.aars.api.repository.Repository;
 import org.gudartem.aars.api.repository.TableDescriptor;
 import org.gudartem.aars.api.repository.TableDescriptorBuilder;
 import org.gudartem.aars.db.model.HasId;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.toSet;
 
-public abstract class BaseRepository<T extends HasId, ID extends Serializable> implements Repository<T, ID> {
+public abstract class BaseRepository<T extends HasId<ID>, ID extends Serializable> implements Repository<T, ID> {
 
     @Autowired
     protected TableDescriptorBuilder tableDescriptorBuilder;
@@ -73,6 +74,21 @@ public abstract class BaseRepository<T extends HasId, ID extends Serializable> i
     public Collection<T> findAll() {
         TableDescriptor descriptor = getTableDescriptor();
         return (Collection<T>) context.selectFrom(descriptor.getTable()).fetchInto(descriptor.getEntityType());
+    }
+
+    @Override
+    public Collection<T> findAll(Collection<? extends Condition> conditions) {
+        TableDescriptor descriptor = getTableDescriptor();
+        return (Collection<T>) context.selectFrom(descriptor.getTable())
+                .where(conditions)
+                .fetchInto(descriptor.getEntityType());
+    }
+
+    public Collection<T> findAll(Condition...conditions) {
+        TableDescriptor descriptor = getTableDescriptor();
+        return (Collection<T>) context.selectFrom(descriptor.getTable())
+                .where(conditions)
+                .fetchInto(descriptor.getEntityType());
     }
 
     protected DSLContext getContext() {
