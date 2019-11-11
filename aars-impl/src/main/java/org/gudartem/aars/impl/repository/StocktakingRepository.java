@@ -6,12 +6,13 @@ import org.gudartem.aars.db.model.entity.Stocktaking;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.STOCKTAKING_REPOSITORY;
+import static org.gudartem.aars.db.jooq.Tables.STOCKTAKING;
 import static org.gudartem.aars.model.PojoFieldNames.HasId.ID;
 import static org.gudartem.aars.model.PojoFieldNames.HasInventoryCardId.INVENTORY_CARD_ID;
 import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
@@ -19,7 +20,6 @@ import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.CHANGED_SHEETS;
 import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.CHANGING;
 import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.DATE_CHANGING;
 import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.DOC_NUMBER;
-import static org.gudartem.aars.db.jooq.Tables.STOCKTAKING;
 
 @Repository(STOCKTAKING_REPOSITORY)
 public class StocktakingRepository
@@ -53,7 +53,7 @@ public class StocktakingRepository
     }
 
     @Override
-    public Collection<Stocktaking> getAllByInvCardId(UUID inventoryCardId) {
-        return findAll(STOCKTAKING.INVENTORY_CARD_ID.eq(inventoryCardId));
+    public List<Stocktaking> getAllByInvCardId(UUID inventoryCardId) {
+        return findAll(STOCKTAKING.CHANGING.asc(), STOCKTAKING.INVENTORY_CARD_ID.eq(inventoryCardId));
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.APPLICABILITY_REPOSITORY;
@@ -25,7 +26,7 @@ public class ApplicabilityServiceImpl
     }
 
     @Override
-    public Collection<Applicability> getAllByInvCardId(UUID inventoryCardId) {
+    public List<Applicability> getAllByInvCardId(UUID inventoryCardId) {
         return repository.getAllByInvCardId(inventoryCardId);
     }
 

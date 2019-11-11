@@ -20,4 +20,6 @@ public interface ServiceName {
     String SUBSCRIBER_SERVICE = "subscriberService";
 
     String THEME_SERVICE = "themeService";
+
+    String CARD_TO_FORMAT_SERVICE = "cardToFormatService";
 }

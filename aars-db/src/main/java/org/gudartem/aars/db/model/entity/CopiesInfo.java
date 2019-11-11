@@ -24,7 +24,7 @@ public class CopiesInfo extends AbstractHasInventoryCardId<UUID> {
     private OffsetDateTime copyDate;
 
     @Column(name = RECEIVED_COPY)
-    private Integer receivedCopy;
+    private String receivedCopy;
 
     @Column(name = ANNULLED_COPY)
     private String annulledCopy;
@@ -43,11 +43,11 @@ public class CopiesInfo extends AbstractHasInventoryCardId<UUID> {
         this.copyDate = copyDate;
     }
 
-    public Integer getReceivedCopy() {
+    public String getReceivedCopy() {
         return receivedCopy;
     }
 
-    public void setReceivedCopy(Integer receivedCopy) {
+    public void setReceivedCopy(String receivedCopy) {
         this.receivedCopy = receivedCopy;
     }
 

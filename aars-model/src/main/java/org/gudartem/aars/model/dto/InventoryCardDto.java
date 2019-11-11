@@ -28,7 +28,7 @@ import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.VTD;
 
 public class InventoryCardDto extends BaseThemeIdDto<UUID> {
 
-    private String inventoryNumber;
+    private Integer inventoryNumber;
 
     private String inventoryNumberSuf;
 
@@ -40,19 +40,19 @@ public class InventoryCardDto extends BaseThemeIdDto<UUID> {
 
     private String sheetCount;
 
-    private String tl;
+    private UUID tl;
 
-    private String vtd;
+    private UUID vtd;
 
-    private String mk;
+    private UUID mk;
 
-    private String mkt;
+    private UUID mkt;
 
-    private String voptk;
+    private UUID voptk;
 
-    private String okufsb;
+    private UUID okufsb;
 
-    private String okufreg;
+    private UUID okufreg;
 
     private Integer cardType;
 
@@ -66,11 +66,11 @@ public class InventoryCardDto extends BaseThemeIdDto<UUID> {
 
     private Set<FormatDto> formatSet;
 
-    public String getInventoryNumber() {
+    public Integer getInventoryNumber() {
         return inventoryNumber;
     }
 
-    public void setInventoryNumber(String inventoryNumber) {
+    public void setInventoryNumber(Integer inventoryNumber) {
         this.inventoryNumber = inventoryNumber;
         addNullField(INVENTORY_NUMBER, inventoryNumber);
     }
@@ -120,65 +120,65 @@ public class InventoryCardDto extends BaseThemeIdDto<UUID> {
         addNullField(SHEET_COUNT, sheetCount);
     }
 
-    public String getTl() {
+    public UUID getTl() {
         return tl;
     }
 
-    public void setTl(String tl) {
+    public void setTl(UUID tl) {
         this.tl = tl;
         addNullField(TL, tl);
     }
 
-    public String getVtd() {
+    public UUID getVtd() {
         return vtd;
     }
 
-    public void setVtd(String vtd) {
+    public void setVtd(UUID vtd) {
         this.vtd = vtd;
         addNullField(VTD, vtd);
     }
 
-    public String getMk() {
+    public UUID getMk() {
         return mk;
     }
 
-    public void setMk(String mk) {
+    public void setMk(UUID mk) {
         this.mk = mk;
         addNullField(MK, mk);
     }
 
-    public String getMkt() {
+    public UUID getMkt() {
         return mkt;
     }
 
-    public void setMkt(String mkt) {
+    public void setMkt(UUID mkt) {
         this.mkt = mkt;
         addNullField(MKT, mkt);
     }
 
-    public String getVoptk() {
+    public UUID getVoptk() {
         return voptk;
     }
 
-    public void setVoptk(String voptk) {
+    public void setVoptk(UUID voptk) {
         this.voptk = voptk;
         addNullField(VOPTK, voptk);
     }
 
-    public String getOkufsb() {
+    public UUID getOkufsb() {
         return okufsb;
     }
 
-    public void setOkufsb(String okufsb) {
+    public void setOkufsb(UUID okufsb) {
         this.okufsb = okufsb;
         addNullField(OKUFSB, okufsb);
     }
 
-    public String getOkufreg() {
+    public UUID getOkufreg() {
         return okufreg;
     }
 
-    public void setOkufreg(String okufreg) {
+    public void setOkufreg(UUID okufreg) {
         this.okufreg = okufreg;
         addNullField(OKUFREG, okufreg);
     }

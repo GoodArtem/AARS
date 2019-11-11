@@ -6,19 +6,19 @@ import org.gudartem.aars.db.model.entity.Directory;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.DIRECTORY_REPOSITORY;
+import static org.gudartem.aars.db.jooq.Tables.DIRECTORY;
 import static org.gudartem.aars.model.PojoFieldNames.Directory.DIRECTORY_NAME;
 import static org.gudartem.aars.model.PojoFieldNames.Directory.DIRECTORY_TYPE;
 import static org.gudartem.aars.model.PojoFieldNames.Directory.PARENT_ID;
 import static org.gudartem.aars.model.PojoFieldNames.HasId.ID;
-import static org.gudartem.aars.model.PojoFieldNames.HasThemeId.THEME_ID;
-import static org.gudartem.aars.db.jooq.Tables.DIRECTORY;
 import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
+import static org.gudartem.aars.model.PojoFieldNames.HasThemeId.THEME_ID;
 
 @Repository(DIRECTORY_REPOSITORY)
 public class DirectoryRepository
@@ -51,7 +51,7 @@ public class DirectoryRepository
     }
 
     @Override
-    public Collection<Directory> getAllByThemeId(UUID themeId) {
+    public List<Directory> getAllByThemeId(UUID themeId) {
         return findAll(DIRECTORY.THEME_ID.eq(themeId));
     }
 }

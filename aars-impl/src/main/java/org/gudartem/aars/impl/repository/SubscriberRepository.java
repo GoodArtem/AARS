@@ -6,12 +6,13 @@ import org.gudartem.aars.db.model.entity.Subscriber;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.SUBSCRIBER_REPOSITORY;
+import static org.gudartem.aars.db.jooq.Tables.SUBSCRIBER;
 import static org.gudartem.aars.model.PojoFieldNames.HasId.ID;
 import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
 import static org.gudartem.aars.model.PojoFieldNames.HasThemeId.THEME_ID;
@@ -20,7 +21,6 @@ import static org.gudartem.aars.model.PojoFieldNames.Subscriber.DESIGNATION;
 import static org.gudartem.aars.model.PojoFieldNames.Subscriber.EX_NUMBER;
 import static org.gudartem.aars.model.PojoFieldNames.Subscriber.SUBSCRIBER_NAME;
 import static org.gudartem.aars.model.PojoFieldNames.Subscriber.SUBSCRIBE_DATE;
-import static org.gudartem.aars.db.jooq.Tables.SUBSCRIBER;
 
 @Repository(SUBSCRIBER_REPOSITORY)
 public class SubscriberRepository
@@ -55,7 +55,7 @@ public class SubscriberRepository
     }
 
     @Override
-    public Collection<Subscriber> getAllByThemeId(UUID themeId) {
-        return findAll(SUBSCRIBER.THEME_ID.eq(themeId));
+    public List<Subscriber> getAllByThemeId(UUID themeId) {
+        return findAll(SUBSCRIBER.SUBSCRIBE_DATE.asc(), SUBSCRIBER.THEME_ID.eq(themeId));
     }
 }

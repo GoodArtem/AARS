@@ -12,7 +12,7 @@ import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.DOC_NUMBER;
 
 public class StocktakingDto extends BaseInventoryCardIdDto<UUID> {
 
-    private String changing;
+    private Integer changing;
 
     private String docNumber;
 
@@ -20,11 +20,11 @@ public class StocktakingDto extends BaseInventoryCardIdDto<UUID> {
 
     private String changedSheets;
 
-    public String getChanging() {
+    public Integer getChanging() {
         return changing;
     }
 
-    public void setChanging(String changing) {
+    public void setChanging(Integer changing) {
         this.changing = changing;
         addNullField(CHANGING, changing);
     }

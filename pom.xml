@@ -14,6 +14,7 @@
         <module>aars-api</module>
         <module>aars-impl</module>
         <module>aars-model</module>
+        <module>aars-web</module>
         <module>aars-application</module>
     </modules>
 

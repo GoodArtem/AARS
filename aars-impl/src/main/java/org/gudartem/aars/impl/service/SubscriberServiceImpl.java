@@ -7,7 +7,7 @@ import org.gudartem.aars.db.model.entity.Subscriber;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.SUBSCRIBER_REPOSITORY;
@@ -25,7 +25,7 @@ public class SubscriberServiceImpl
     }
 
     @Override
-    public Collection<Subscriber> getAllByThemeId(UUID themeId) {
+    public List<Subscriber> getAllByThemeId(UUID themeId) {
         return repository.getAllByThemeId(themeId);
     }
 

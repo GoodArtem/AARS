@@ -19,16 +19,16 @@ public class DbConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
-    DataSource cimDevDataSource() {
+    DataSource aarsDevDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean
     Flyway flyway() {
         Flyway flyway = Flyway.configure()
-                .dataSource(cimDevDataSource())
+                .dataSource(aarsDevDataSource())
                 .baselineOnMigrate(true)
-                .cleanOnValidationError(true)
+//                .cleanOnValidationError(true)
                 .locations("classpath:db.migration.postgresql")
                 .schemas("public")
                 .load();
@@ -39,15 +39,15 @@ public class DbConfiguration {
 
     @Primary
     @Bean("transactionAwareDataSource")
-    @DependsOn(value = "cimDevDataSource")
+    @DependsOn(value = "aarsDevDataSource")
     @Qualifier(value = "transactionAwareDataSource")
-    public TransactionAwareDataSourceProxy transactionAwareDataSource(@Autowired @Qualifier("cimDevDataSource") DataSource dataSource) {
+    public TransactionAwareDataSourceProxy transactionAwareDataSource(@Autowired @Qualifier("aarsDevDataSource") DataSource dataSource) {
         return new TransactionAwareDataSourceProxy(dataSource);
     }
 
     @Bean
-    @DependsOn(value = "cimDevDataSource")
-    public DataSourceTransactionManager transactionManager(@Autowired @Qualifier("cimDevDataSource") DataSource dataSource) {
+    @DependsOn(value = "aarsDevDataSource")
+    public DataSourceTransactionManager transactionManager(@Autowired @Qualifier("aarsDevDataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 }

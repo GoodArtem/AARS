@@ -7,7 +7,7 @@ import org.gudartem.aars.db.model.entity.OnceOnlyIssue;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.ONCE_ONLY_ISSUE_REPOSITORY;
@@ -25,7 +25,7 @@ public class OnceOnlyIssueServiceImpl
     }
 
     @Override
-    public Collection<OnceOnlyIssue> getAllByInvCardId(UUID inventoryCardId) {
+    public List<OnceOnlyIssue> getAllByInvCardId(UUID inventoryCardId) {
         return repository.getAllByInvCardId(inventoryCardId);
     }
 

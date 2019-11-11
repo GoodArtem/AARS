@@ -32,6 +32,7 @@ import static org.gudartem.aars.db.constants.ColumnName.InventoryCard.STATE;
 import static org.gudartem.aars.db.constants.ColumnName.InventoryCard.TL;
 import static org.gudartem.aars.db.constants.ColumnName.InventoryCard.VOPTK;
 import static org.gudartem.aars.db.constants.ColumnName.InventoryCard.VTD;
+import static org.gudartem.aars.db.constants.PostgresCustomTypes.UUID_TYPE;
 import static org.gudartem.aars.db.constants.TableName.CARD_TO_FORMAT;
 import static org.gudartem.aars.db.constants.TableName.INVENTORY_CARD;
 
@@ -40,7 +41,7 @@ import static org.gudartem.aars.db.constants.TableName.INVENTORY_CARD;
 public class InventoryCard extends AbstractHasThemeId<UUID> {
 
     @Column(name = INVENTORY_NUMBER)
-    private String inventoryNumber;
+    private Integer inventoryNumber;
 
     @Column(name = INVENTORY_NUMBER_SUF)
     private String inventoryNumberSuf;
@@ -57,26 +58,26 @@ public class InventoryCard extends AbstractHasThemeId<UUID> {
     @Column(name = SHEET_COUNT)
     private String sheetCount;
 
-    @Column(name = TL)
-    private String tl;
+    @Column(name = TL, columnDefinition = UUID_TYPE)
+    private UUID tl;
 
-    @Column(name = VTD)
-    private String vtd;
+    @Column(name = VTD, columnDefinition = UUID_TYPE)
+    private UUID vtd;
 
-    @Column(name = MK)
-    private String mk;
+    @Column(name = MK, columnDefinition = UUID_TYPE)
+    private UUID mk;
 
-    @Column(name = MKT)
-    private String mkt;
+    @Column(name = MKT, columnDefinition = UUID_TYPE)
+    private UUID mkt;
 
-    @Column(name = VOPTK)
-    private String voptk;
+    @Column(name = VOPTK, columnDefinition = UUID_TYPE)
+    private UUID voptk;
 
-    @Column(name = OKUFSB)
-    private String okufsb;
+    @Column(name = OKUFSB, columnDefinition = UUID_TYPE)
+    private UUID okufsb;
 
-    @Column(name = OKUFREG)
-    private String okufreg;
+    @Column(name = OKUFREG, columnDefinition = UUID_TYPE)
+    private UUID okufreg;
 
     @Column(name = CARD_TYPE)
     private Integer cardType;
@@ -90,7 +91,7 @@ public class InventoryCard extends AbstractHasThemeId<UUID> {
     @Column(name = ANNULLED_DATE)
     private OffsetDateTime annulledDate;
 
-    @Column(name = DIRECTORY_ID)
+    @Column(name = DIRECTORY_ID, columnDefinition = UUID_TYPE)
     private UUID directoryId;
 
     @ManyToMany
@@ -99,11 +100,11 @@ public class InventoryCard extends AbstractHasThemeId<UUID> {
             inverseJoinColumns = { @JoinColumn(name = FORMAT_ID)})
     private Set<Format> formatSet;
 
-    public String getInventoryNumber() {
+    public Integer getInventoryNumber() {
         return inventoryNumber;
     }
 
-    public void setInventoryNumber(String inventoryNumber) {
+    public void setInventoryNumber(Integer inventoryNumber) {
         this.inventoryNumber = inventoryNumber;
     }
 
@@ -147,59 +148,59 @@ public class InventoryCard extends AbstractHasThemeId<UUID> {
         this.sheetCount = sheetCount;
     }
 
-    public String getTl() {
+    public UUID getTl() {
         return tl;
     }
 
-    public void setTl(String tl) {
+    public void setTl(UUID tl) {
         this.tl = tl;
     }
 
-    public String getVtd() {
+    public UUID getVtd() {
         return vtd;
     }
 
-    public void setVtd(String vtd) {
+    public void setVtd(UUID vtd) {
         this.vtd = vtd;
     }
 
-    public String getMk() {
+    public UUID getMk() {
         return mk;
     }
 
-    public void setMk(String mk) {
+    public void setMk(UUID mk) {
         this.mk = mk;
     }
 
-    public String getMkt() {
+    public UUID getMkt() {
         return mkt;
     }
 
-    public void setMkt(String mkt) {
+    public void setMkt(UUID mkt) {
         this.mkt = mkt;
     }
 
-    public String getVoptk() {
+    public UUID getVoptk() {
         return voptk;
     }
 
-    public void setVoptk(String voptk) {
+    public void setVoptk(UUID voptk) {
         this.voptk = voptk;
     }
 
-    public String getOkufsb() {
+    public UUID getOkufsb() {
         return okufsb;
     }
 
-    public void setOkufsb(String okufsb) {
+    public void setOkufsb(UUID okufsb) {
         this.okufsb = okufsb;
     }
 
-    public String getOkufreg() {
+    public UUID getOkufreg() {
         return okufreg;
     }
 
-    public void setOkufreg(String okufreg) {
+    public void setOkufreg(UUID okufreg) {
         this.okufreg = okufreg;
     }
 

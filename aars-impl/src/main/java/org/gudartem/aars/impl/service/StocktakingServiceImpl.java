@@ -7,7 +7,7 @@ import org.gudartem.aars.db.model.entity.Stocktaking;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.STOCKTAKING_REPOSITORY;
@@ -25,7 +25,7 @@ public class StocktakingServiceImpl
     }
 
     @Override
-    public Collection<Stocktaking> getAllByInvCardId(UUID inventoryCardId) {
+    public List<Stocktaking> getAllByInvCardId(UUID inventoryCardId) {
         return repository.getAllByInvCardId(inventoryCardId);
     }
 

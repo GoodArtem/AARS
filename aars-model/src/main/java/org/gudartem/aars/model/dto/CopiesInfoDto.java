@@ -15,7 +15,7 @@ public class CopiesInfoDto extends BaseInventoryCardIdDto<UUID> {
 
     private OffsetDateTime copyDate;
 
-    private Integer receivedCopy;
+    private String receivedCopy;
 
     private String annulledCopy;
 
@@ -32,11 +32,11 @@ public class CopiesInfoDto extends BaseInventoryCardIdDto<UUID> {
         addNullField(COPY_DATE, copyDate);
     }
 
-    public Integer getReceivedCopy() {
+    public String getReceivedCopy() {
         return receivedCopy;
     }
 
-    public void setReceivedCopy(Integer receivedCopy) {
+    public void setReceivedCopy(String receivedCopy) {
         this.receivedCopy = receivedCopy;
         addNullField(RECEIVED_COPY, receivedCopy);
     }

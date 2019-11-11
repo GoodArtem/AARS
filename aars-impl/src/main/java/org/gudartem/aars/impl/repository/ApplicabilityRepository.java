@@ -6,20 +6,20 @@ import org.gudartem.aars.db.model.entity.Applicability;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.APPLICABILITY_REPOSITORY;
-import static org.gudartem.aars.model.PojoFieldNames.HasId.ID;
+import static org.gudartem.aars.db.jooq.Tables.APPLICABILITY;
 import static org.gudartem.aars.model.PojoFieldNames.Applicability.APPLICABILITY_DATE;
 import static org.gudartem.aars.model.PojoFieldNames.Applicability.APP_INVENTORY_CARD_ID;
 import static org.gudartem.aars.model.PojoFieldNames.Applicability.CIPHER;
 import static org.gudartem.aars.model.PojoFieldNames.Applicability.DESIGNATION;
+import static org.gudartem.aars.model.PojoFieldNames.HasId.ID;
 import static org.gudartem.aars.model.PojoFieldNames.HasInventoryCardId.INVENTORY_CARD_ID;
 import static org.gudartem.aars.model.PojoFieldNames.HasRevision.REVISION;
-import static org.gudartem.aars.db.jooq.Tables.APPLICABILITY;
 
 @Repository(APPLICABILITY_REPOSITORY)
 public class ApplicabilityRepository
@@ -53,7 +53,7 @@ public class ApplicabilityRepository
     }
 
     @Override
-    public Collection<Applicability> getAllByInvCardId(UUID inventoryCardId) {
-        return findAll(APPLICABILITY.INVENTORY_CARD_ID.eq(inventoryCardId));
+    public List<Applicability> getAllByInvCardId(UUID inventoryCardId) {
+        return findAll(APPLICABILITY.APPLICABILITY_DATE.asc(), APPLICABILITY.INVENTORY_CARD_ID.eq(inventoryCardId));
     }
 }
