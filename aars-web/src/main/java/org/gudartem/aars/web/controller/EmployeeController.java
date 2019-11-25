@@ -6,16 +6,22 @@ import org.gudartem.aars.db.model.entity.Employee;
 import org.gudartem.aars.model.dto.EmployeeDto;
 import org.gudartem.aars.model.request.SearchRequestParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.UUID;
 
+@CrossOrigin(origins = "*",
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET, RequestMethod.DELETE, RequestMethod.POST},
+        maxAge = 1800)
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {

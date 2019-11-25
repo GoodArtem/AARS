@@ -1,6 +1,6 @@
 package org.gudartem.aars.impl.repository;
 
-import org.gudartem.aars.api.repository.HasThemeIdRepository;
+import org.gudartem.aars.api.repository.HasDirectoryIdRepository;
 import org.gudartem.aars.api.repository.TableDescriptor;
 import org.gudartem.aars.db.model.entity.Directory;
 import org.jooq.Field;
@@ -23,7 +23,7 @@ import static org.gudartem.aars.model.PojoFieldNames.HasThemeId.THEME_ID;
 @Repository(DIRECTORY_REPOSITORY)
 public class DirectoryRepository
         extends BaseRepository<Directory, UUID>
-        implements HasThemeIdRepository<Directory, UUID> {
+        implements HasDirectoryIdRepository<Directory, UUID> {
 
     private TableDescriptor tableDescriptor;
 
@@ -52,6 +52,11 @@ public class DirectoryRepository
 
     @Override
     public List<Directory> getAllByThemeId(UUID themeId) {
-        return findAll(DIRECTORY.THEME_ID.eq(themeId));
+        return findAll(DIRECTORY.DIRECTORY_NAME.asc(), DIRECTORY.THEME_ID.eq(themeId), DIRECTORY.PARENT_ID.isNull());
+    }
+
+    @Override
+    public List<Directory> getAllByDirectoryId(UUID directoryId) {
+        return findAll(DIRECTORY.DIRECTORY_NAME.asc(), DIRECTORY.PARENT_ID.eq(directoryId));
     }
 }

@@ -12,9 +12,7 @@ public class PdfUtil {
 
     public static float POINT_BY_MM = 2.8346f;
 
-    public static DateTimeFormatter RUS_DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-    private BaseFont baseFont;
+    public static DateTimeFormatter RUS_DATE_FORMAT = DateTimeFormatter.ofPattern("dd.MM.yy");
 
     private Font headerFont;
 

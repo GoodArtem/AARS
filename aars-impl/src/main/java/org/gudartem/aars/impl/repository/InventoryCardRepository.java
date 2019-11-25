@@ -1,6 +1,6 @@
 package org.gudartem.aars.impl.repository;
 
-import org.gudartem.aars.api.repository.HasThemeIdRepository;
+import org.gudartem.aars.api.repository.HasDirectoryIdRepository;
 import org.gudartem.aars.api.repository.TableDescriptor;
 import org.gudartem.aars.db.model.entity.InventoryCard;
 import org.jooq.Field;
@@ -38,7 +38,7 @@ import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.VTD;
 @Repository(INVENTORY_CARD_REPOSITORY)
 public class InventoryCardRepository
         extends BaseRepository<InventoryCard, UUID>
-        implements HasThemeIdRepository<InventoryCard, UUID> {
+        implements HasDirectoryIdRepository<InventoryCard, UUID> {
 
     private TableDescriptor tableDescriptor;
 
@@ -83,5 +83,10 @@ public class InventoryCardRepository
     @Override
     public List<InventoryCard> getAllByThemeId(UUID themeId) {
         return findAll(INVENTORY_CARD.THEME_ID.eq(themeId));
+    }
+
+    @Override
+    public List<InventoryCard> getAllByDirectoryId(UUID directoryId) {
+        return findAll(INVENTORY_CARD.CARD_NAME.asc(), INVENTORY_CARD.DIRECTORY_ID.eq(directoryId));
     }
 }

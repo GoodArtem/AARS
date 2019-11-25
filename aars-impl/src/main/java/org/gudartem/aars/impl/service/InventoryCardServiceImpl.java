@@ -1,7 +1,9 @@
 package org.gudartem.aars.impl.service;
 
+import org.gudartem.aars.api.repository.HasDirectoryIdRepository;
 import org.gudartem.aars.api.repository.HasThemeIdRepository;
 import org.gudartem.aars.api.repository.Repository;
+import org.gudartem.aars.api.service.HasDirectoryIdService;
 import org.gudartem.aars.api.service.HasThemeIdService;
 import org.gudartem.aars.db.model.entity.InventoryCard;
 import org.gudartem.aars.impl.service.internal.CardToFormatService;
@@ -18,13 +20,15 @@ import static org.gudartem.aars.api.service.ServiceName.INVENTORY_CARD_SERVICE;
 import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.FORMAT_SET;
 
 @Service(INVENTORY_CARD_SERVICE)
-public class InventoryCardServiceImpl extends CRUDServiceImpl<InventoryCard, UUID> implements HasThemeIdService<InventoryCard, UUID> {
+public class InventoryCardServiceImpl
+        extends CRUDServiceImpl<InventoryCard, UUID>
+        implements HasDirectoryIdService<InventoryCard, UUID> {
 
-    private HasThemeIdRepository repository;
+    private HasDirectoryIdRepository repository;
 
     private CardToFormatService cardToFormatService;
 
-    public InventoryCardServiceImpl(@Qualifier(INVENTORY_CARD_REPOSITORY) HasThemeIdRepository repository,
+    public InventoryCardServiceImpl(@Qualifier(INVENTORY_CARD_REPOSITORY) HasDirectoryIdRepository repository,
                                     @Qualifier(CARD_TO_FORMAT_SERVICE) CardToFormatService cardToFormatService) {
         this.repository = repository;
         this.cardToFormatService = cardToFormatService;
@@ -33,6 +37,11 @@ public class InventoryCardServiceImpl extends CRUDServiceImpl<InventoryCard, UUI
     @Override
     public List<InventoryCard> getAllByThemeId(UUID themeId) {
         return repository.getAllByThemeId(themeId);
+    }
+
+    @Override
+    public List<InventoryCard> getAllByDirectoryId(UUID directoryId) {
+        return repository.getAllByDirectoryId(directoryId);
     }
 
     @Override
