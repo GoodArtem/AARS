@@ -51,4 +51,9 @@ public class OnceOnlyIssueController {
     public Collection<OnceOnlyIssueDto> getByCondition(@RequestBody SearchRequestParams requestParams) {
         return mapper.toCollectionDto(service.getByCondition(requestParams));
     }
+
+    @GetMapping("/getByInventoryCard/{inventoryCardId}")
+    public Collection<OnceOnlyIssueDto> getAllByDirectory(@PathVariable UUID inventoryCardId) {
+        return mapper.toCollectionDto(service.getAllByInvCardId(inventoryCardId));
+    }
 }

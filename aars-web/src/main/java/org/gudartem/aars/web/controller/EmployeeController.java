@@ -37,6 +37,11 @@ public class EmployeeController {
         return fetchPlan == null ? mapper.toDto(service.getById(id)) : mapper.toDto(service.getById(id, fetchPlan));
     }
 
+    @GetMapping("/all")
+    public Collection<EmployeeDto> getAll() {
+        return mapper.toCollectionDto(service.getAll());
+    }
+
     @PostMapping("/create")
     public EmployeeDto create(@RequestBody EmployeeDto requestParams) {
         return mapper.toDto(service.create(mapper.toDomainObject(requestParams)));

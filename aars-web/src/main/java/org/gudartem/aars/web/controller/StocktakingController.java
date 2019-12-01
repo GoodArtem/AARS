@@ -51,4 +51,9 @@ public class StocktakingController {
     public Collection<StocktakingDto> getByCondition(@RequestBody SearchRequestParams requestParams) {
         return mapper.toCollectionDto(service.getByCondition(requestParams));
     }
+
+    @GetMapping("/getByInventoryCard/{inventoryCardId}")
+    public Collection<StocktakingDto> getAllByDirectory(@PathVariable UUID inventoryCardId) {
+        return mapper.toCollectionDto(service.getAllByInvCardId(inventoryCardId));
+    }
 }

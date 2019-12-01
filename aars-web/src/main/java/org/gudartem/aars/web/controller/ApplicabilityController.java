@@ -51,4 +51,9 @@ public class ApplicabilityController {
     public Collection<ApplicabilityDto> getByCondition(@RequestBody SearchRequestParams requestParams) {
         return mapper.toCollectionDto(service.getByCondition(requestParams));
     }
+
+    @GetMapping("/getByInventoryCard/{inventoryCardId}")
+    public Collection<ApplicabilityDto> getAllByDirectory(@PathVariable UUID inventoryCardId) {
+        return mapper.toCollectionDto(service.getAllByInvCardId(inventoryCardId));
+    }
 }

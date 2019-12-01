@@ -37,6 +37,11 @@ public class FormatController {
         return fetchPlan == null ? mapper.toDto(service.getById(id)) : mapper.toDto(service.getById(id, fetchPlan));
     }
 
+    @GetMapping("/all")
+    public Collection<FormatDto> getAll() {
+        return mapper.toCollectionDto(service.getAll());
+    }
+
     @PostMapping("/create")
     public FormatDto create(@RequestBody FormatDto requestParams) {
         return mapper.toDto(service.create(mapper.toDomainObject(requestParams)));

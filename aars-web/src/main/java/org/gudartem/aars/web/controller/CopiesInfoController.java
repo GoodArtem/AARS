@@ -51,4 +51,9 @@ public class CopiesInfoController {
     public Collection<CopiesInfoDto> getByCondition(@RequestBody SearchRequestParams requestParams) {
         return mapper.toCollectionDto(service.getByCondition(requestParams));
     }
+
+    @GetMapping("/getByInventoryCard/{inventoryCardId}")
+    public Collection<CopiesInfoDto> getAllByDirectory(@PathVariable UUID inventoryCardId) {
+        return mapper.toCollectionDto(service.getAllByInvCardId(inventoryCardId));
+    }
 }
