@@ -36,12 +36,24 @@ public class InventoryCardServiceImpl
 
     @Override
     public List<InventoryCard> getAllByThemeId(UUID themeId) {
-        return repository.getAllByThemeId(themeId);
+        List<InventoryCard> result = repository.getAllByThemeId(themeId);
+        if (result != null && !result.isEmpty()) {
+            for (InventoryCard e : result) {
+                postOperationEnrich(e);
+            }
+        }
+        return result;
     }
 
     @Override
     public List<InventoryCard> getAllByDirectoryId(UUID directoryId) {
-        return repository.getAllByDirectoryId(directoryId);
+        List<InventoryCard> result = repository.getAllByDirectoryId(directoryId);
+        if (result != null && !result.isEmpty()) {
+            for (InventoryCard e : result) {
+                postOperationEnrich(e);
+            }
+        }
+        return result;
     }
 
     @Override
