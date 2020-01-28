@@ -44,7 +44,12 @@ public class SubscriberController {
 
     @PostMapping("/update")
     public SubscriberDto update(@RequestBody SubscriberDto requestParams) {
-        return mapper.toDto(service.create(mapper.toDomainObject(requestParams)));
+        return mapper.toDto(service.patch(mapper.toDomainObject(requestParams)));
+    }
+
+    @PostMapping("/delete")
+    public void delete(@RequestBody SubscriberDto deletingEntity) {
+        service.delete(deletingEntity.getId());
     }
 
     @PostMapping("/getByCondition")

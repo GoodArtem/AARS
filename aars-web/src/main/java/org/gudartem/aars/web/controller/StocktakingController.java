@@ -44,7 +44,12 @@ public class StocktakingController {
 
     @PostMapping("/update")
     public StocktakingDto update(@RequestBody StocktakingDto requestParams) {
-        return mapper.toDto(service.create(mapper.toDomainObject(requestParams)));
+        return mapper.toDto(service.patch(mapper.toDomainObject(requestParams)));
+    }
+
+    @PostMapping("/delete")
+    public void delete(@RequestBody StocktakingDto deletingEntity) {
+        service.delete(deletingEntity.getId());
     }
 
     @PostMapping("/getByCondition")

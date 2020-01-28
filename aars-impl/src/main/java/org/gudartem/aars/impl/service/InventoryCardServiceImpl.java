@@ -1,14 +1,14 @@
 package org.gudartem.aars.impl.service;
 
 import org.gudartem.aars.api.repository.HasDirectoryIdRepository;
-import org.gudartem.aars.api.repository.HasThemeIdRepository;
 import org.gudartem.aars.api.repository.Repository;
 import org.gudartem.aars.api.service.HasDirectoryIdService;
-import org.gudartem.aars.api.service.HasThemeIdService;
 import org.gudartem.aars.db.model.entity.InventoryCard;
+import org.gudartem.aars.impl.service.abstraction.CRUDServiceUUIDImpl;
 import org.gudartem.aars.impl.service.internal.CardToFormatService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +21,7 @@ import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.FORMAT_SET;
 
 @Service(INVENTORY_CARD_SERVICE)
 public class InventoryCardServiceImpl
-        extends CRUDServiceImpl<InventoryCard, UUID>
+        extends CRUDServiceUUIDImpl<InventoryCard>
         implements HasDirectoryIdService<InventoryCard, UUID> {
 
     private HasDirectoryIdRepository repository;
@@ -35,6 +35,7 @@ public class InventoryCardServiceImpl
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<InventoryCard> getAllByThemeId(UUID themeId) {
         List<InventoryCard> result = repository.getAllByThemeId(themeId);
         if (result != null && !result.isEmpty()) {
@@ -46,6 +47,7 @@ public class InventoryCardServiceImpl
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<InventoryCard> getAllByDirectoryId(UUID directoryId) {
         List<InventoryCard> result = repository.getAllByDirectoryId(directoryId);
         if (result != null && !result.isEmpty()) {

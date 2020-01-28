@@ -49,7 +49,12 @@ public class FormatController {
 
     @PostMapping("/update")
     public FormatDto update(@RequestBody FormatDto requestParams) {
-        return mapper.toDto(service.create(mapper.toDomainObject(requestParams)));
+        return mapper.toDto(service.patch(mapper.toDomainObject(requestParams)));
+    }
+
+    @PostMapping("/delete")
+    public void delete(@RequestBody FormatDto deletingEntity) {
+        service.delete(deletingEntity.getId());
     }
 
     @PostMapping("/getByCondition")

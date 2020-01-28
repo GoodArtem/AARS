@@ -146,6 +146,7 @@ public abstract class BaseRepository<T extends HasId<ID>, ID extends Serializabl
     }
 
     protected <S extends T> void preInsert(S entity, UpdatableRecord record) {
+        setChangedFalseForNullFields(record);
     }
 
     protected <S extends T> S postInsert(S entity) {
@@ -153,18 +154,29 @@ public abstract class BaseRepository<T extends HasId<ID>, ID extends Serializabl
     }
 
     protected <S extends T> void preUpdate(S entity, UpdatableRecord record) {
-        if (entity.getNullFields() != null && !entity.getNullFields().isEmpty()) {
-            Collection<String> unqualifiedNameNullFields = pojoPropertyNameToUnqualified(entity.getNullFields());
-            for (Field<?> field : record.fields()) {
-                if (isNotManuallySetToNull(field, record, unqualifiedNameNullFields)) {
-                    record.changed(field, false);
-                }
+        if (entity.getNullFields() == null || entity.getNullFields().isEmpty()) {
+            setChangedFalseForNullFields(record);
+        }
+        Collection<String> unqualifiedNameNullFields = pojoPropertyNameToUnqualified(entity.getNullFields());
+        for (Field<?> field : record.fields()) {
+            if (isNotManuallySetToNull(field, record, unqualifiedNameNullFields)) {
+                record.changed(field, false);
             }
         }
     }
 
     protected <S extends T> S postUpdate(S entity) {
         return entity;
+    }
+
+    private void setChangedFalseForNullFields(UpdatableRecord record) {
+        if (record.fields() != null) {
+            for (Field<?> field : record.fields()) {
+                if (field.getValue(record) == null) {
+                    record.changed(field, false);
+                }
+            }
+        }
     }
 
     private Collection<String> pojoPropertyNameToUnqualified(final Collection<String> properties) {

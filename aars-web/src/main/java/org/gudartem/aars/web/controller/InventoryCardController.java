@@ -58,7 +58,12 @@ public class InventoryCardController {
 
     @PostMapping("/update")
     public InventoryCardDto update(@RequestBody InventoryCardDto requestParams) {
-        return mapper.toDto(service.create(mapper.toDomainObject(requestParams)));
+        return mapper.toDto(service.patch(mapper.toDomainObject(requestParams)));
+    }
+
+    @PostMapping("/delete")
+    public void delete(@RequestBody InventoryCardDto deletingEntity) {
+        service.delete(deletingEntity.getId());
     }
 
     @PostMapping("/getByCondition")

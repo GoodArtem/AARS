@@ -1,7 +1,7 @@
 package org.gudartem.aars.web.controller;
 
 import org.gudartem.aars.api.mapper.EntityMapper;
-import org.gudartem.aars.api.service.HasDirectoryIdService;
+import org.gudartem.aars.api.service.DirectoryService;
 import org.gudartem.aars.db.model.entity.Directory;
 import org.gudartem.aars.model.dto.DirectoryDto;
 import org.gudartem.aars.model.request.SearchRequestParams;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
@@ -27,7 +26,7 @@ import java.util.UUID;
 @RequestMapping("/directory")
 public class DirectoryController {
     @Autowired
-    private HasDirectoryIdService<Directory, UUID> service;
+    private DirectoryService<Directory, UUID> service;
 
     @Autowired
     private EntityMapper<Directory, DirectoryDto> mapper;
@@ -45,7 +44,12 @@ public class DirectoryController {
 
     @PostMapping("/update")
     public DirectoryDto update(@RequestBody DirectoryDto requestParams) {
-        return mapper.toDto(service.create(mapper.toDomainObject(requestParams)));
+        return mapper.toDto(service.patch(mapper.toDomainObject(requestParams)));
+    }
+
+    @PostMapping("/delete")
+    public void delete(@RequestBody DirectoryDto deletingEntity) {
+        service.delete(deletingEntity.getId());
     }
 
     @PostMapping("/getByCondition")
@@ -61,5 +65,10 @@ public class DirectoryController {
     @GetMapping("/getByDirectory/{directoryId}")
     public Collection<DirectoryDto> getAllByDirectory(@PathVariable UUID directoryId) {
         return mapper.toCollectionDto(service.getAllByDirectoryId(directoryId));
+    }
+
+    @GetMapping("/getPathToTheme/{directoryId}")
+    public Collection<DirectoryDto> getPathToTheme(@PathVariable UUID directoryId) {
+        return mapper.toCollectionDto(service.getPathToTheme(directoryId));
     }
 }

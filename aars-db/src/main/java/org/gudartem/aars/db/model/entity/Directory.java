@@ -21,7 +21,7 @@ public class Directory extends AbstractHasThemeId<UUID> {
     private String directoryName;
 
     @Column(name = DIRECTORY_TYPE)
-    private String directoryType;
+    private Integer directoryType;
 
     @Column(name = PARENT_ID, columnDefinition = UUID_TYPE)
     private UUID parentId;
@@ -34,11 +34,11 @@ public class Directory extends AbstractHasThemeId<UUID> {
         this.directoryName = directoryName;
     }
 
-    public String getDirectoryType() {
+    public Integer getDirectoryType() {
         return directoryType;
     }
 
-    public void setDirectoryType(String directoryType) {
+    public void setDirectoryType(Integer directoryType) {
         this.directoryType = directoryType;
     }
 

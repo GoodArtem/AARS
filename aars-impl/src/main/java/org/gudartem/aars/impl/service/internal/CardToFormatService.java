@@ -4,6 +4,7 @@ import org.gudartem.aars.db.model.entity.Format;
 import org.gudartem.aars.impl.repository.internal.CardToFormatRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Set;
@@ -21,10 +22,12 @@ public class CardToFormatService {
         this.repository = repository;
     }
 
+    @Transactional(readOnly = true)
     public Set<Format> getFormatSet(UUID inventoryCardId) {
         return repository.getFormatSet(inventoryCardId);
     }
 
+    @Transactional
     public void updateFormatSet(UUID inventoryCardId, Set<Format> formatSet) {
         repository.updateRelations(inventoryCardId, formatSet);
     }

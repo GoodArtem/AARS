@@ -12,7 +12,7 @@ public class DirectoryDto extends BaseThemeIdDto<UUID> {
 
     private String directoryName;
 
-    private String directoryType;
+    private Integer directoryType;
 
     private UUID parentId;
 
@@ -25,11 +25,11 @@ public class DirectoryDto extends BaseThemeIdDto<UUID> {
         addNullField(DIRECTORY_NAME, directoryName);
     }
 
-    public String getDirectoryType() {
+    public Integer getDirectoryType() {
         return directoryType;
     }
 
-    public void setDirectoryType(String directoryType) {
+    public void setDirectoryType(Integer directoryType) {
         this.directoryType = directoryType;
         addNullField(DIRECTORY_TYPE, directoryType);
     }

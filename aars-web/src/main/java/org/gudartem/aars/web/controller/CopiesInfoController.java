@@ -44,7 +44,12 @@ public class CopiesInfoController {
 
     @PostMapping("/update")
     public CopiesInfoDto update(@RequestBody CopiesInfoDto requestParams) {
-        return mapper.toDto(service.create(mapper.toDomainObject(requestParams)));
+        return mapper.toDto(service.patch(mapper.toDomainObject(requestParams)));
+    }
+
+    @PostMapping("/delete")
+    public void delete(@RequestBody CopiesInfoDto deletingEntity) {
+        service.delete(deletingEntity.getId());
     }
 
     @PostMapping("/getByCondition")

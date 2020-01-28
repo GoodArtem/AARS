@@ -2,6 +2,7 @@ package org.gudartem.aars.impl.service;
 
 import org.gudartem.aars.api.repository.Repository;
 import org.gudartem.aars.db.model.entity.Employee;
+import org.gudartem.aars.impl.service.abstraction.CRUDServiceUUIDImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import static org.gudartem.aars.api.repository.RepositoryName.EMPLOYEE_REPOSITOR
 import static org.gudartem.aars.api.service.ServiceName.EMPLOYEE_SERVICE;
 
 @Service(EMPLOYEE_SERVICE)
-public class EmployeeServiceImpl extends CRUDServiceImpl<Employee, UUID> {
+public class EmployeeServiceImpl extends CRUDServiceUUIDImpl<Employee> {
 
     private Repository repository;
 

@@ -44,7 +44,12 @@ public class OnceOnlyIssueController {
 
     @PostMapping("/update")
     public OnceOnlyIssueDto update(@RequestBody OnceOnlyIssueDto requestParams) {
-        return mapper.toDto(service.create(mapper.toDomainObject(requestParams)));
+        return mapper.toDto(service.patch(mapper.toDomainObject(requestParams)));
+    }
+
+    @PostMapping("/delete")
+    public void delete(@RequestBody OnceOnlyIssueDto deletingEntity) {
+        service.delete(deletingEntity.getId());
     }
 
     @PostMapping("/getByCondition")

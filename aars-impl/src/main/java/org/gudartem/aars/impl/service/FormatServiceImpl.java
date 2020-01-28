@@ -2,6 +2,7 @@ package org.gudartem.aars.impl.service;
 
 import org.gudartem.aars.api.repository.Repository;
 import org.gudartem.aars.db.model.entity.Format;
+import org.gudartem.aars.impl.service.abstraction.CRUDServiceUUIDImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import static org.gudartem.aars.api.repository.RepositoryName.FORMAT_REPOSITORY;
 import static org.gudartem.aars.api.service.ServiceName.FORMAT_SERVICE;
 
 @Service(FORMAT_SERVICE)
-public class FormatServiceImpl extends CRUDServiceImpl<Format, UUID> {
+public class FormatServiceImpl extends CRUDServiceUUIDImpl<Format> {
 
     private Repository repository;
 

@@ -1,4 +1,4 @@
-package org.gudartem.aars.impl.service;
+package org.gudartem.aars.impl.service.abstraction;
 
 import org.gudartem.aars.api.repository.Repository;
 import org.gudartem.aars.api.service.CRUDService;
@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.UUID;
 
 public abstract class CRUDServiceImpl<Entity extends HasId<ID>, ID extends Serializable>
         implements CRUDService<Entity, ID> {
@@ -58,7 +57,7 @@ public abstract class CRUDServiceImpl<Entity extends HasId<ID>, ID extends Seria
     @Override
     @Transactional
     public Entity create(Entity entityToCreate) {
-        entityToCreate.setId((ID) UUID.randomUUID());
+        entityToCreate.setId(generateNewId());
         Entity result = getRepository().insert(entityToCreate);
         return postOperationEnrich(result, entityToCreate);
     }

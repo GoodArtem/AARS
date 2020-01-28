@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS public.employee (
     id uuid NOT NULL,
 	employee_name varchar NULL,
 	revision int4 NOT NULL DEFAULT 1,
-	old_id int4 NOT NULL,
+	old_id int4 NULL,
 	CONSTRAINT employee_pk PRIMARY KEY (id)
 );
 
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS public.format (
     id uuid NOT NULL,
 	format_name varchar NULL,
 	revision int4 NOT NULL DEFAULT 1,
-	old_id int4 NOT NULL,
+	old_id int4 NULL,
 	CONSTRAINT format_pk PRIMARY KEY (id)
 );
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS public.theme (
 	cipher varchar NULL,
 	has_changes varchar NULL,
 	revision int4 NOT NULL DEFAULT 1,
-	old_id int4 NOT NULL,
+	old_id int4 NULL,
 	CONSTRAINT theme_pk PRIMARY KEY (id)
 );
 
@@ -44,11 +44,11 @@ CREATE TABLE IF NOT EXISTS public.theme (
 CREATE TABLE IF NOT EXISTS public.directory (
     id uuid NOT NULL,
 	directory_name varchar NULL,
-	directory_type varchar NULL,
+	directory_type int4 NOT NULL DEFAULT 0,
 	theme_id uuid NULL,
 	parent_id uuid NULL,
 	revision int4 NOT NULL DEFAULT 1,
-	old_id int4 NOT NULL,
+	old_id int4 NULL,
 	old_theme_id int4 NULL,
 	old_parent_id int4 NULL,
 	CONSTRAINT directory_pk PRIMARY KEY (id),
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS public.inventory_card (
 	theme_id uuid NULL,
 	directory_id uuid NULL,
 	revision int4 NOT NULL DEFAULT 1,
-	old_id int4 NOT NULL,
+	old_id int4 NULL,
 	old_theme_id int4 NULL,
 	old_directory_id int4 NULL,
 	old_tl int4 NULL,
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS public.applicability (
 	inventory_card_id uuid NULL,
 	app_inventory_card_id uuid NULL,
 	revision int4 NOT NULL DEFAULT 1,
-	old_id int4 NOT NULL,
+	old_id int4 NULL,
 	old_inventory_card_id int4 NULL,
 	old_app_inventory_card_id int4 NULL,
 	CONSTRAINT applicability_pk PRIMARY KEY (id),
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS public.copies_info (
 	inventory_card_id uuid NULL,
 	employee_id uuid NULL,
 	revision int4 NOT NULL DEFAULT 1,
-	old_id int4 NOT NULL,
+	old_id int4 NULL,
 	old_inventory_card_id int4 NULL,
 	old_employee_id int4 NULL,
 	CONSTRAINT copies_info_pk PRIMARY KEY (id),
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS public.once_only_issue (
 	to_whom varchar NULL,
 	inventory_card_id uuid NULL,
 	revision int4 NOT NULL DEFAULT 1,
-	old_id int4 NOT NULL,
+	old_id int4 NULL,
 	old_inventory_card_id int4 NULL,
 	CONSTRAINT once_only_issue_pk PRIMARY KEY (id),
 	CONSTRAINT once_only_issue_fk FOREIGN KEY (inventory_card_id) REFERENCES inventory_card(id) ON DELETE CASCADE
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS public.stocktaking (
 	changed_sheets varchar NULL,
 	inventory_card_id uuid NULL,
 	revision int4 NOT NULL DEFAULT 1,
-	old_id int4 NOT NULL,
+	old_id int4 NULL,
 	old_inventory_card_id int4 NULL,
 	CONSTRAINT stocktaking_pk PRIMARY KEY (id),
 	CONSTRAINT stocktaking_fk FOREIGN KEY (inventory_card_id) REFERENCES inventory_card(id) ON DELETE CASCADE
@@ -201,7 +201,7 @@ CREATE TABLE IF NOT EXISTS public.subscriber (
 	annulled varchar NULL,
 	theme_id uuid NULL,
 	revision int4 NOT NULL DEFAULT 1,
-	old_id int4 NOT NULL,
+	old_id int4 NULL,
 	old_theme_id int4 NULL,
 	CONSTRAINT subscriber_pk PRIMARY KEY (id),
 	CONSTRAINT subscriber_fk FOREIGN KEY (theme_id) REFERENCES theme(id) ON DELETE CASCADE

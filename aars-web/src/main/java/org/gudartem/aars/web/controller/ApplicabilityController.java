@@ -44,7 +44,12 @@ public class ApplicabilityController {
 
     @PostMapping("/update")
     public ApplicabilityDto update(@RequestBody ApplicabilityDto requestParams) {
-        return mapper.toDto(service.create(mapper.toDomainObject(requestParams)));
+        return mapper.toDto(service.patch(mapper.toDomainObject(requestParams)));
+    }
+
+    @PostMapping("/delete")
+    public void delete(@RequestBody ApplicabilityDto deletingEntity) {
+        service.delete(deletingEntity.getId());
     }
 
     @PostMapping("/getByCondition")
