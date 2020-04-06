@@ -56,4 +56,9 @@ public class SubscriberController {
     public Collection<SubscriberDto> getByCondition(@RequestBody SearchRequestParams requestParams) {
         return mapper.toCollectionDto(service.getByCondition(requestParams));
     }
+
+    @GetMapping("/getByTheme/{themeId}")
+    public Collection<SubscriberDto> getAllByTheme(@PathVariable UUID themeId) {
+        return mapper.toCollectionDto(service.getAllByThemeId(themeId));
+    }
 }
