@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS public.inventory_card (
 	card_name varchar NULL,
 	designation varchar NULL,
 	cipher varchar NULL,
-	sheet_count varchar NULL,
+	sheet_count int4 NULL,
 	tl uuid NULL,
 	vtd uuid NULL,
 	mk uuid NULL,

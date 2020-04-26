@@ -56,7 +56,7 @@ public class InventoryCard extends AbstractHasThemeId<UUID> {
     private String cipher;
 
     @Column(name = SHEET_COUNT)
-    private String sheetCount;
+    private Integer sheetCount;
 
     @Column(name = TL, columnDefinition = UUID_TYPE)
     private UUID tl;
@@ -140,11 +140,11 @@ public class InventoryCard extends AbstractHasThemeId<UUID> {
         this.cipher = cipher;
     }
 
-    public String getSheetCount() {
+    public Integer getSheetCount() {
         return sheetCount;
     }
 
-    public void setSheetCount(String sheetCount) {
+    public void setSheetCount(Integer sheetCount) {
         this.sheetCount = sheetCount;
     }
 

@@ -1,8 +1,8 @@
 package org.gudartem.aars.web.controller;
 
 import org.gudartem.aars.api.mapper.EntityMapper;
-import org.gudartem.aars.api.service.HasDirectoryIdService;
 import org.gudartem.aars.api.service.InventoryCardPdfService;
+import org.gudartem.aars.api.service.InventoryCardServiceService;
 import org.gudartem.aars.db.model.entity.InventoryCard;
 import org.gudartem.aars.model.dto.InventoryCardDto;
 import org.gudartem.aars.model.request.SearchRequestParams;
@@ -37,7 +37,7 @@ import java.util.UUID;
 public class InventoryCardController {
 
     @Autowired
-    private HasDirectoryIdService<InventoryCard, UUID> service;
+    private InventoryCardServiceService service;
 
     @Autowired
     private EntityMapper<InventoryCard, InventoryCardDto> mapper;
@@ -79,6 +79,19 @@ public class InventoryCardController {
     @GetMapping("/getByDirectory/{directoryId}")
     public Collection<InventoryCardDto> getAllByDirectory(@PathVariable UUID directoryId) {
         return mapper.toCollectionDto(service.getAllByDirectoryId(directoryId));
+    }
+
+    @GetMapping("/getNextSequenceInventoryNumber")
+    public Integer getNextSequenceInventoryNumber(@RequestParam UUID parentDirectoryId) {
+        return service.getNextSequenceInventoryNumber(parentDirectoryId);
+    }
+
+    @GetMapping("/getExistsInventoryCard")
+    public Boolean getExistsInventoryCard(@RequestParam(required = false) UUID id,
+                                          @RequestParam Integer inventoryNumber,
+                                          @RequestParam(required = false) String inventoryNumberSuf,
+                                          @RequestParam Integer cardType) {
+        return service.getExistsInventoryCard(id, inventoryNumber, inventoryNumberSuf, cardType);
     }
 
     @GetMapping("/downloadPdf/{id}")

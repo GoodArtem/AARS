@@ -1,8 +1,10 @@
 package org.gudartem.aars.impl.service;
 
-import org.gudartem.aars.api.repository.HasDirectoryIdRepository;
+import org.gudartem.aars.api.repository.InventoryCardRepository;
 import org.gudartem.aars.api.repository.Repository;
-import org.gudartem.aars.api.service.HasDirectoryIdService;
+import org.gudartem.aars.api.service.DirectoryService;
+import org.gudartem.aars.api.service.InventoryCardServiceService;
+import org.gudartem.aars.db.model.entity.Directory;
 import org.gudartem.aars.db.model.entity.InventoryCard;
 import org.gudartem.aars.impl.service.abstraction.CRUDServiceUUIDImpl;
 import org.gudartem.aars.impl.service.internal.CardToFormatService;
@@ -16,22 +18,34 @@ import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.INVENTORY_CARD_REPOSITORY;
 import static org.gudartem.aars.api.service.ServiceName.CARD_TO_FORMAT_SERVICE;
+import static org.gudartem.aars.api.service.ServiceName.DIRECTORY_SERVICE;
 import static org.gudartem.aars.api.service.ServiceName.INVENTORY_CARD_SERVICE;
 import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.FORMAT_SET;
 
 @Service(INVENTORY_CARD_SERVICE)
 public class InventoryCardServiceImpl
         extends CRUDServiceUUIDImpl<InventoryCard>
-        implements HasDirectoryIdService<InventoryCard, UUID> {
+        implements InventoryCardServiceService {
 
-    private HasDirectoryIdRepository repository;
+    private InventoryCardRepository repository;
 
     private CardToFormatService cardToFormatService;
 
-    public InventoryCardServiceImpl(@Qualifier(INVENTORY_CARD_REPOSITORY) HasDirectoryIdRepository repository,
-                                    @Qualifier(CARD_TO_FORMAT_SERVICE) CardToFormatService cardToFormatService) {
+    private DirectoryService<Directory, UUID> directoryService;
+
+    public InventoryCardServiceImpl(@Qualifier(INVENTORY_CARD_REPOSITORY) InventoryCardRepository repository,
+                                    @Qualifier(CARD_TO_FORMAT_SERVICE) CardToFormatService cardToFormatService,
+                                    @Qualifier(DIRECTORY_SERVICE) DirectoryService directoryService) {
         this.repository = repository;
         this.cardToFormatService = cardToFormatService;
+        this.directoryService = directoryService;
+    }
+
+    @Override
+    @Transactional
+    public InventoryCard create(InventoryCard inventoryCard) {
+        inventoryCard.setCardType(getRootDirectory(inventoryCard.getDirectoryId()).getDirectoryType());
+        return super.create(inventoryCard);
     }
 
     @Override
@@ -64,6 +78,7 @@ public class InventoryCardServiceImpl
     }
 
     @Override
+    @Transactional
     protected InventoryCard postOperationEnrich(InventoryCard entityToEnrich,
                                                 InventoryCard baseEntity, Collection<String> fetchPlan) {
         if (baseEntity != null
@@ -75,5 +90,24 @@ public class InventoryCardServiceImpl
             entityToEnrich.setFormatSet(cardToFormatService.getFormatSet(entityToEnrich.getId()));
         }
         return super.postOperationEnrich(entityToEnrich, baseEntity, fetchPlan);
+    }
+
+    @Transactional
+    private Directory getRootDirectory(UUID parentDirectoryId) {
+        List<Directory> pathToTheme = directoryService.getPathToTheme(parentDirectoryId);
+        return pathToTheme.get(pathToTheme.size() - 1);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Integer getNextSequenceInventoryNumber(UUID parentDirectoryId) {
+        Directory rootDirectory = getRootDirectory(parentDirectoryId);
+        return repository.getNextSequenceInventoryNumber(rootDirectory.getDirectoryType());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean getExistsInventoryCard(UUID id, Integer inventoryNumber, String inventoryNumberSuf, Integer cardType) {
+        return repository.getExistsInventoryCard(id, inventoryNumber, inventoryNumberSuf, cardType);
     }
 }

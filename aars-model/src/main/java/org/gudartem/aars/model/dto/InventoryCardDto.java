@@ -38,7 +38,7 @@ public class InventoryCardDto extends BaseThemeIdDto<UUID> {
 
     private String cipher;
 
-    private String sheetCount;
+    private Integer sheetCount;
 
     private UUID tl;
 
@@ -111,11 +111,11 @@ public class InventoryCardDto extends BaseThemeIdDto<UUID> {
         addNullField(CIPHER, cipher);
     }
 
-    public String getSheetCount() {
+    public Integer getSheetCount() {
         return sheetCount;
     }
 
-    public void setSheetCount(String sheetCount) {
+    public void setSheetCount(Integer sheetCount) {
         this.sheetCount = sheetCount;
         addNullField(SHEET_COUNT, sheetCount);
     }

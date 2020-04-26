@@ -1,6 +1,6 @@
 package org.gudartem.aars.impl.repository;
 
-import org.gudartem.aars.api.repository.HasDirectoryIdRepository;
+import org.gudartem.aars.api.repository.InventoryCardRepository;
 import org.gudartem.aars.api.repository.TableDescriptor;
 import org.gudartem.aars.db.model.entity.InventoryCard;
 import org.jooq.Field;
@@ -34,11 +34,12 @@ import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.STATE;
 import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.TL;
 import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.VOPTK;
 import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.VTD;
+import static org.jooq.impl.DSL.max;
 
 @Repository(INVENTORY_CARD_REPOSITORY)
-public class InventoryCardRepository
+public class InventoryCardRepositoryImpl
         extends BaseRepository<InventoryCard, UUID>
-        implements HasDirectoryIdRepository<InventoryCard, UUID> {
+        implements InventoryCardRepository {
 
     private TableDescriptor tableDescriptor;
 
@@ -88,5 +89,28 @@ public class InventoryCardRepository
     @Override
     public List<InventoryCard> getAllByDirectoryId(UUID directoryId) {
         return findAll(INVENTORY_CARD.CARD_NAME.asc(), INVENTORY_CARD.DIRECTORY_ID.eq(directoryId));
+    }
+
+    @Override
+    public Integer getNextSequenceInventoryNumber(Integer cardType) {
+        Integer lastNumber = getContext()
+                .select(max(INVENTORY_CARD.INVENTORY_NUMBER))
+                .from(INVENTORY_CARD)
+                .where(INVENTORY_CARD.CARD_TYPE.eq(cardType))
+                .fetchOneInto(Integer.class);
+        return lastNumber == null ? 1 : lastNumber + 1;
+    }
+
+    @Override
+    public Boolean getExistsInventoryCard(UUID id, Integer inventoryNumber, String inventoryNumberSuf, Integer cardType) {
+        return 0 < getContext().fetchCount(INVENTORY_CARD,
+                INVENTORY_CARD.CARD_TYPE.eq(cardType)
+                        .and(INVENTORY_CARD.INVENTORY_NUMBER.eq(inventoryNumber))
+                        .and(inventoryNumberSuf == null
+                                ? INVENTORY_CARD.INVENTORY_NUMBER_SUF.isNull()
+                                : INVENTORY_CARD.INVENTORY_NUMBER_SUF.eq(inventoryNumberSuf))
+                        .and(id == null
+                                ? INVENTORY_CARD.ID.isNotNull()
+                                : INVENTORY_CARD.ID.notEqual(id)));
     }
 }

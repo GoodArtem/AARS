@@ -195,7 +195,7 @@ public abstract class BaseRepository<T extends HasId<ID>, ID extends Serializabl
         return field.getValue(record) == null && !nullFields.contains(field.getUnqualifiedName().toString());
     }
 
-    private T valueOrNull(Record record, Class<T> type) {
+    protected T valueOrNull(Record record, Class<T> type) {
         return record == null ? null : record.into(type);
     }
 

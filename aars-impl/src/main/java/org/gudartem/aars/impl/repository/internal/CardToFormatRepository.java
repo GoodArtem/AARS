@@ -54,7 +54,7 @@ public class CardToFormatRepository {
             }
         }
 
-        if (!existingFormatIdsNotEmpty) {
+        if (existingFormatIdsNotEmpty) {
             for (UUID formatId : existingFormatIds) {
                 deleteRelations(inventoryCardId, formatId);
             }
