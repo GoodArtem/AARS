@@ -19,8 +19,7 @@ import static org.gudartem.aars.db.constants.TableName.STOCKTAKING;
 @Table(name = STOCKTAKING)
 public class Stocktaking extends AbstractHasInventoryCardId<UUID> {
 
-    @Column(name = CHANGING)
-    private Integer changing;
+    private String changing;
 
     @Column(name = DOC_NUMBER)
     private String docNumber;
@@ -31,11 +30,11 @@ public class Stocktaking extends AbstractHasInventoryCardId<UUID> {
     @Column(name = CHANGED_SHEETS)
     private String changedSheets;
 
-    public Integer getChanging() {
+    public String getChanging() {
         return changing;
     }
 
-    public void setChanging(Integer changing) {
+    public void setChanging(String changing) {
         this.changing = changing;
     }
 

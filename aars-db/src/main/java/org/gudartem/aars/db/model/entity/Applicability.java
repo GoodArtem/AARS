@@ -22,10 +22,8 @@ public class Applicability extends AbstractHasInventoryCardId<UUID> {
     @Column(name = APPLICABILITY_DATE)
     private OffsetDateTime applicabilityDate;
 
-    @Column(name = DESIGNATION)
     private String designation;
 
-    @Column(name = CIPHER)
     private String cipher;
 
     @Column(name = APP_INVENTORY_CARD_ID, columnDefinition = UUID_TYPE)

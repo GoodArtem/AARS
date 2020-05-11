@@ -86,8 +86,7 @@ public class InventoryCardPdfServiceImpl implements InventoryCardPdfService {
             document.close();
             pdfFile.deleteOnExit();
         } catch (Exception ex) {
-            ex.printStackTrace();
-            // ToDo: create runtime exception
+            throw new RuntimeException(ex);
         }
 
         return pdfFile;

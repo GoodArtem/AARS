@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 public abstract class CRUDServiceImpl<Entity extends HasId<ID>, ID extends Serializable>
         implements CRUDService<Entity, ID> {
@@ -18,26 +19,16 @@ public abstract class CRUDServiceImpl<Entity extends HasId<ID>, ID extends Seria
 
     @Override
     @Transactional(readOnly = true)
-    public Collection<Entity> getAll() {
-        Collection<Entity> result = getRepository().findAll();
-        if (result != null && !result.isEmpty()) {
-            for (Entity e : result) {
-                postOperationEnrich(e);
-            }
-        }
-        return result;
+    public List<Entity> getAll() {
+        List<Entity> result = getRepository().findAll();
+        return postOperationEnrich(result);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Collection<Entity> getByCondition(SearchRequestParams requestParams) {
-        Collection<Entity> result = getRepository().findAll(requestParams);
-        if (result != null && !result.isEmpty()) {
-            for (Entity e : result) {
-                postOperationEnrich(e, requestParams.getFetchPlan());
-            }
-        }
-        return result;
+    public List<Entity> getByCondition(SearchRequestParams requestParams) {
+        List<Entity> result = getRepository().findAll(requestParams);
+        return postOperationEnrich(result, requestParams.getFetchPlan());
     }
 
     @Override
@@ -57,16 +48,19 @@ public abstract class CRUDServiceImpl<Entity extends HasId<ID>, ID extends Seria
     @Override
     @Transactional
     public Entity create(Entity entityToCreate) {
-        entityToCreate.setId(generateNewId());
+        preCreate(entityToCreate);
         Entity result = getRepository().insert(entityToCreate);
-        return postOperationEnrich(result, entityToCreate);
+        postCreateOrUpdate(result, entityToCreate);
+        return postOperationEnrich(result);
     }
 
     @Override
     @Transactional
     public Entity patch(Entity entityToPatch) {
+        preUpdate(entityToPatch);
         Entity result = getRepository().update(entityToPatch);
-        return postOperationEnrich(result, entityToPatch);
+        postCreateOrUpdate(result, entityToPatch);
+        return postOperationEnrich(result);
     }
 
     @Override
@@ -81,19 +75,49 @@ public abstract class CRUDServiceImpl<Entity extends HasId<ID>, ID extends Seria
         return getRepository().existsById(id);
     }
 
+    @Transactional
+    protected List<Entity> postOperationEnrich(List<Entity> entityList) {
+        return postOperationEnrich(entityList, null);
+    }
+
+    @Transactional
+    protected List<Entity> postOperationEnrich(List<Entity> entityList, Collection<String> fetchPlan) {
+        if (entityList == null || entityList.isEmpty()) {
+            return entityList;
+        }
+        for (Entity entity : entityList) {
+            if (fetchPlan != null) {
+                postOperationEnrich(entity, fetchPlan);
+            } else {
+                postOperationEnrich(entity);
+            }
+        }
+        return entityList;
+    }
+
+    @Transactional
+    protected Entity preCreate(Entity creatingEntity) {
+        creatingEntity.setId(generateNewId());
+        return creatingEntity;
+    }
+
+    @Transactional
+    protected Entity preUpdate(Entity updatingEntity) {
+        return updatingEntity;
+    }
+
+    @Transactional
     protected Entity postOperationEnrich(Entity entityToEnrich) {
-        return postOperationEnrich(entityToEnrich, null, null);
+        return postOperationEnrich(entityToEnrich, null);
     }
 
+    @Transactional
     protected Entity postOperationEnrich(Entity entityToEnrich, Collection<String> fetchPlan) {
-        return postOperationEnrich(entityToEnrich, null, fetchPlan);
-    }
-
-    protected Entity postOperationEnrich(Entity entityToEnrich, Entity baseEntity) {
-        return postOperationEnrich(entityToEnrich, baseEntity, null);
-    }
-
-    protected Entity postOperationEnrich(Entity entityToEnrich, Entity baseEntity, Collection<String> fetchPlan) {
         return entityToEnrich;
+    }
+
+    @Transactional
+    protected Entity postCreateOrUpdate(Entity resultEntity, Entity baseEntity) {
+        return resultEntity;
     }
 }

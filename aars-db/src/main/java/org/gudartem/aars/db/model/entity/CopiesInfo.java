@@ -29,7 +29,6 @@ public class CopiesInfo extends AbstractHasInventoryCardId<UUID> {
     @Column(name = ANNULLED_COPY)
     private String annulledCopy;
 
-    @Column(name = DESIGNATION)
     private String designation;
 
     @Column(name = EMPLOYEE_ID, columnDefinition = UUID_TYPE)

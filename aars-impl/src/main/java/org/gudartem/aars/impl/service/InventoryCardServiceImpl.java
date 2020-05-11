@@ -1,9 +1,12 @@
 package org.gudartem.aars.impl.service;
 
+import org.gudartem.aars.api.error.exception.RestClientException;
+import org.gudartem.aars.api.error.model.ErrorCode;
+import org.gudartem.aars.api.error.utils.ErrorUtils;
 import org.gudartem.aars.api.repository.InventoryCardRepository;
 import org.gudartem.aars.api.repository.Repository;
 import org.gudartem.aars.api.service.DirectoryService;
-import org.gudartem.aars.api.service.InventoryCardServiceService;
+import org.gudartem.aars.api.service.InventoryCardService;
 import org.gudartem.aars.db.model.entity.Directory;
 import org.gudartem.aars.db.model.entity.InventoryCard;
 import org.gudartem.aars.impl.service.abstraction.CRUDServiceUUIDImpl;
@@ -25,7 +28,7 @@ import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.FORMAT_SET;
 @Service(INVENTORY_CARD_SERVICE)
 public class InventoryCardServiceImpl
         extends CRUDServiceUUIDImpl<InventoryCard>
-        implements InventoryCardServiceService {
+        implements InventoryCardService {
 
     private InventoryCardRepository repository;
 
@@ -39,13 +42,6 @@ public class InventoryCardServiceImpl
         this.repository = repository;
         this.cardToFormatService = cardToFormatService;
         this.directoryService = directoryService;
-    }
-
-    @Override
-    @Transactional
-    public InventoryCard create(InventoryCard inventoryCard) {
-        inventoryCard.setCardType(getRootDirectory(inventoryCard.getDirectoryId()).getDirectoryType());
-        return super.create(inventoryCard);
     }
 
     @Override
@@ -79,17 +75,35 @@ public class InventoryCardServiceImpl
 
     @Override
     @Transactional
-    protected InventoryCard postOperationEnrich(InventoryCard entityToEnrich,
-                                                InventoryCard baseEntity, Collection<String> fetchPlan) {
+    protected InventoryCard preCreate(InventoryCard creatingEntity) {
+        creatingEntity.setCardType(getRootDirectory(creatingEntity.getDirectoryId()).getDirectoryType());
+        if (getExistsInventoryCard(null,
+                creatingEntity.getInventoryNumber(),
+                creatingEntity.getInventoryNumberSuf(),
+                creatingEntity.getCardType())) {
+            throw ErrorUtils.getUnprocessableEntityException(ErrorCode.AARS_0002, creatingEntity.getInventoryNumber(), creatingEntity.getInventoryNumberSuf());
+        }
+        return super.preCreate(creatingEntity);
+    }
+
+    @Override
+    @Transactional
+    protected InventoryCard postOperationEnrich(InventoryCard entityToEnrich, Collection<String> fetchPlan) {
+        if (fetchPlan == null || fetchPlan.isEmpty() || fetchPlan.contains(FORMAT_SET)) {
+            entityToEnrich.setFormatSet(cardToFormatService.getFormatSet(entityToEnrich.getId()));
+        }
+        return super.postOperationEnrich(entityToEnrich, fetchPlan);
+    }
+
+    @Override
+    @Transactional
+    protected InventoryCard postCreateOrUpdate(InventoryCard resultEntity, InventoryCard baseEntity) {
         if (baseEntity != null
                 && (baseEntity.getFormatSet() != null
                 || (baseEntity.getNullFields() != null && baseEntity.getNullFields().contains(FORMAT_SET)))) {
             cardToFormatService.updateFormatSet(baseEntity.getId(), baseEntity.getFormatSet());
         }
-        if (fetchPlan == null || fetchPlan.isEmpty() || fetchPlan.contains(FORMAT_SET)) {
-            entityToEnrich.setFormatSet(cardToFormatService.getFormatSet(entityToEnrich.getId()));
-        }
-        return super.postOperationEnrich(entityToEnrich, baseEntity, fetchPlan);
+        return super.postCreateOrUpdate(resultEntity, baseEntity);
     }
 
     @Transactional

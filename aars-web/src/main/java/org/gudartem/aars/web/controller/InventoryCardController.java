@@ -2,7 +2,7 @@ package org.gudartem.aars.web.controller;
 
 import org.gudartem.aars.api.mapper.EntityMapper;
 import org.gudartem.aars.api.service.InventoryCardPdfService;
-import org.gudartem.aars.api.service.InventoryCardServiceService;
+import org.gudartem.aars.api.service.InventoryCardService;
 import org.gudartem.aars.db.model.entity.InventoryCard;
 import org.gudartem.aars.model.dto.InventoryCardDto;
 import org.gudartem.aars.model.request.SearchRequestParams;
@@ -37,7 +37,7 @@ import java.util.UUID;
 public class InventoryCardController {
 
     @Autowired
-    private InventoryCardServiceService service;
+    private InventoryCardService service;
 
     @Autowired
     private EntityMapper<InventoryCard, InventoryCardDto> mapper;
