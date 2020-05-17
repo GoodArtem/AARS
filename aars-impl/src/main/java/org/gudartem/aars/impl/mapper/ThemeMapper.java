@@ -7,6 +7,6 @@ import org.mapstruct.Mapper;
 
 import java.util.UUID;
 
-@Mapper(componentModel = "spring", imports = UUID.class)
+@Mapper(componentModel = "spring", imports = UUID.class, uses = DirectoryMapper.class)
 public interface ThemeMapper extends EntityMapper<Theme, ThemeDto> {
 }

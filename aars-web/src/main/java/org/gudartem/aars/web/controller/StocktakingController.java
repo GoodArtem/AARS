@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 
 @CrossOrigin(origins = "*",
@@ -40,6 +41,11 @@ public class StocktakingController {
     @PostMapping("/create")
     public StocktakingDto create(@RequestBody StocktakingDto requestParams) {
         return mapper.toDto(service.create(mapper.toDomainObject(requestParams)));
+    }
+
+    @PostMapping("/bulkCreate")
+    public Collection<StocktakingDto> bulkCreate(@RequestBody Set<StocktakingDto> entitiesToCreate) {
+        return mapper.toCollectionDto(service.bulkCreate(mapper.toCollectionDomainObject(entitiesToCreate)));
     }
 
     @PostMapping("/update")

@@ -14,6 +14,13 @@ public class BaseDto<T> implements HasId<T> {
 
     private Set<String> nullFields = new HashSet<>();
 
+    public BaseDto() {
+    }
+
+    public BaseDto(T id) {
+        this.id = id;
+    }
+
     @Override
     public T getId() {
         return id;

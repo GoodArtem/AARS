@@ -1,8 +1,11 @@
 package org.gudartem.aars.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.gudartem.aars.model.abstraction.BaseDto;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.gudartem.aars.model.PojoFieldNames.Theme.ARCHIVE_DATE;
@@ -19,6 +22,13 @@ public class ThemeDto extends BaseDto<UUID> {
     private String cipher;
 
     private String hasChanges;
+
+    @JsonProperty(value = "children", access = JsonProperty.Access.READ_ONLY)
+    private List<DirectoryDto> children;
+
+    public ThemeDto() {
+        this.children = new ArrayList<>();
+    }
 
     public String getThemeName() {
         return themeName;
@@ -54,5 +64,23 @@ public class ThemeDto extends BaseDto<UUID> {
     public void setHasChanges(String hasChanges) {
         this.hasChanges = hasChanges;
         addNullField(HAS_CHANGES, hasChanges);
+    }
+
+    public List<DirectoryDto> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<DirectoryDto> children) {
+        this.children = children;
+    }
+
+    @JsonProperty(value = "isTheme", access = JsonProperty.Access.READ_ONLY)
+    public Boolean getIsTheme() {
+        return Boolean.TRUE;
+    }
+
+    @JsonProperty(value = "name", access = JsonProperty.Access.READ_ONLY)
+    public String getName() {
+        return getThemeName() + " " + getCipher();
     }
 }

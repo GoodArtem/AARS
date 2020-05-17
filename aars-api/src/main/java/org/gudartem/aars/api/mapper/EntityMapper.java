@@ -8,4 +8,6 @@ public interface EntityMapper<DomainObject, Dto> {
     DomainObject toDomainObject(Dto dto);
 
     Collection<Dto> toCollectionDto(Collection<DomainObject> domainObjectCollection);
+
+    Collection<DomainObject> toCollectionDomainObject(Collection<Dto> dtoCollection);
 }

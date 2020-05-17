@@ -1,7 +1,9 @@
 package org.gudartem.aars.impl.service;
 
-import org.gudartem.aars.api.repository.HasInventoryCardIdRepository;
+import org.gudartem.aars.api.error.model.ErrorCode;
+import org.gudartem.aars.api.error.utils.ErrorUtils;
 import org.gudartem.aars.api.repository.Repository;
+import org.gudartem.aars.api.repository.StocktakingRepository;
 import org.gudartem.aars.api.service.HasInventoryCardIdService;
 import org.gudartem.aars.db.model.entity.Stocktaking;
 import org.gudartem.aars.impl.service.abstraction.CRUDServiceUUIDImpl;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+import static org.gudartem.aars.api.constants.BusinessConstants.NEW_STOCKTAKING;
 import static org.gudartem.aars.api.repository.RepositoryName.STOCKTAKING_REPOSITORY;
 import static org.gudartem.aars.api.service.ServiceName.STOCKTAKING_SERVICE;
 
@@ -20,11 +23,10 @@ public class StocktakingServiceImpl
         extends CRUDServiceUUIDImpl<Stocktaking>
         implements HasInventoryCardIdService<Stocktaking, UUID> {
 
-    private final static String NEW_STOCKTAKING = "Нов.";
     private final static String DASH = "-";
-    private HasInventoryCardIdRepository repository;
+    private StocktakingRepository repository;
 
-    public StocktakingServiceImpl(@Qualifier(STOCKTAKING_REPOSITORY) HasInventoryCardIdRepository repository) {
+    public StocktakingServiceImpl(@Qualifier(STOCKTAKING_REPOSITORY) StocktakingRepository repository) {
         this.repository = repository;
     }
 
@@ -52,6 +54,36 @@ public class StocktakingServiceImpl
             }
         }
         return super.postOperationEnrich(stocktakingList);
+    }
+
+    @Override
+    @Transactional
+    protected Stocktaking preCreate(Stocktaking creatingEntity) {
+        validate(creatingEntity);
+        return super.preCreate(creatingEntity);
+    }
+
+    @Override
+    @Transactional
+    protected Stocktaking preUpdate(Stocktaking updatingEntity) {
+        validate(updatingEntity);
+        return super.preUpdate(updatingEntity);
+    }
+
+    @Transactional
+    private void validate(Stocktaking creatingOrUpdatingEntity) {
+        if (!NEW_STOCKTAKING.equalsIgnoreCase(creatingOrUpdatingEntity.getChangedSheets())) {
+            return;
+        }
+        if (repository.newStocktakingAlreadyExists(creatingOrUpdatingEntity.getId(),
+                creatingOrUpdatingEntity.getInventoryCardId())) {
+            throw ErrorUtils.getUnprocessableEntityException(ErrorCode.AARS_0003);
+        }
+        if (repository.newStocktakingHasIncorrectDate(creatingOrUpdatingEntity.getId(),
+                creatingOrUpdatingEntity.getInventoryCardId(), creatingOrUpdatingEntity.getDateChanging())) {
+            throw ErrorUtils.getUnprocessableEntityException(ErrorCode.AARS_0004);
+        }
+        creatingOrUpdatingEntity.setChangedSheets(NEW_STOCKTAKING);
     }
 
     @Override

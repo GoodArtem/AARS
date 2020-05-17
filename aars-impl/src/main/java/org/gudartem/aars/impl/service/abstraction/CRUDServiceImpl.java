@@ -7,6 +7,7 @@ import org.gudartem.aars.model.request.SearchRequestParams;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,6 +44,19 @@ public abstract class CRUDServiceImpl<Entity extends HasId<ID>, ID extends Seria
     public Entity getById(ID id, Collection<String> fetchPlan) {
         Entity result = getRepository().findById(id, fetchPlan);
         return postOperationEnrich(result, fetchPlan);
+    }
+
+    @Override
+    @Transactional
+    public Collection<Entity> bulkCreate(Collection<Entity> entitiesToCreate) {
+        if (entitiesToCreate == null) {
+            throw new NullPointerException("List of creating items cannot be null.");
+        }
+        Collection<Entity> result = new ArrayList<>();
+        for (Entity entity : entitiesToCreate) {
+            result.add(create(entity));
+        }
+        return result;
     }
 
     @Override

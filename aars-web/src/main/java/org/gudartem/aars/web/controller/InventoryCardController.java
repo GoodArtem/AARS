@@ -1,11 +1,16 @@
 package org.gudartem.aars.web.controller;
 
 import org.gudartem.aars.api.mapper.EntityMapper;
+import org.gudartem.aars.api.model.TreeWithOpenedBranchResult;
 import org.gudartem.aars.api.service.InventoryCardPdfService;
 import org.gudartem.aars.api.service.InventoryCardService;
 import org.gudartem.aars.db.model.entity.InventoryCard;
+import org.gudartem.aars.db.model.entity.Theme;
+import org.gudartem.aars.model.abstraction.BaseDto;
 import org.gudartem.aars.model.dto.InventoryCardDto;
+import org.gudartem.aars.model.dto.ThemeDto;
 import org.gudartem.aars.model.request.SearchRequestParams;
+import org.gudartem.aars.web.model.TreeWithOpenedBranchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -44,6 +49,9 @@ public class InventoryCardController {
 
     @Autowired
     private InventoryCardPdfService pdfService;
+
+    @Autowired
+    private EntityMapper<Theme, ThemeDto> themeMapper;
 
     @GetMapping("{id}")
     public InventoryCardDto getById(@PathVariable UUID id,
@@ -94,6 +102,24 @@ public class InventoryCardController {
         return service.getExistsInventoryCard(id, inventoryNumber, inventoryNumberSuf, cardType);
     }
 
+
+    @GetMapping("/getPathToInventoryCard")
+    public Collection<UUID> getPathToInventoryCard(@RequestParam UUID id) {
+        return service.getPathToInventoryCard(id);
+    }
+
+    @GetMapping("/getTreeWithOpenedBranch")
+    public TreeWithOpenedBranchResponse getTreeWithOpenedBranch(@RequestParam UUID id) {
+        TreeWithOpenedBranchResult result = service.getTreeWithOpenedBranch(id);
+        TreeWithOpenedBranchResponse response = new TreeWithOpenedBranchResponse();
+        response.setTree(themeMapper.toCollectionDto(result.getTree()));
+        for (UUID openId : result.getOpen()) {
+            response.getOpen().add(new BaseDto<>(openId));
+        }
+        response.getActive().add(new BaseDto<>(result.getActive()));
+        return response;
+    }
+
     @GetMapping("/downloadPdf/{id}")
     public ResponseEntity<Resource> getPdf(@PathVariable UUID id) {
         try {
@@ -105,7 +131,6 @@ public class InventoryCardController {
                     .contentType(MediaType.APPLICATION_PDF)
                     .body(isr);
         } catch (FileNotFoundException ex) {
-            // ToDo: create exception
             throw new RuntimeException("File not found");
         }
     }

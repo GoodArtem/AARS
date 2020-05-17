@@ -1,28 +1,33 @@
 package org.gudartem.aars.impl.service;
 
-import org.gudartem.aars.api.error.exception.RestClientException;
 import org.gudartem.aars.api.error.model.ErrorCode;
 import org.gudartem.aars.api.error.utils.ErrorUtils;
+import org.gudartem.aars.api.model.TreeWithOpenedBranchResult;
 import org.gudartem.aars.api.repository.InventoryCardRepository;
 import org.gudartem.aars.api.repository.Repository;
+import org.gudartem.aars.api.service.CRUDService;
 import org.gudartem.aars.api.service.DirectoryService;
 import org.gudartem.aars.api.service.InventoryCardService;
 import org.gudartem.aars.db.model.entity.Directory;
 import org.gudartem.aars.db.model.entity.InventoryCard;
+import org.gudartem.aars.db.model.entity.Theme;
 import org.gudartem.aars.impl.service.abstraction.CRUDServiceUUIDImpl;
 import org.gudartem.aars.impl.service.internal.CardToFormatService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.UUID;
 
 import static org.gudartem.aars.api.repository.RepositoryName.INVENTORY_CARD_REPOSITORY;
 import static org.gudartem.aars.api.service.ServiceName.CARD_TO_FORMAT_SERVICE;
 import static org.gudartem.aars.api.service.ServiceName.DIRECTORY_SERVICE;
 import static org.gudartem.aars.api.service.ServiceName.INVENTORY_CARD_SERVICE;
+import static org.gudartem.aars.api.service.ServiceName.THEME_SERVICE;
 import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.FORMAT_SET;
 
 @Service(INVENTORY_CARD_SERVICE)
@@ -36,12 +41,16 @@ public class InventoryCardServiceImpl
 
     private DirectoryService<Directory, UUID> directoryService;
 
+    private CRUDService<Theme, UUID> themeService;
+
     public InventoryCardServiceImpl(@Qualifier(INVENTORY_CARD_REPOSITORY) InventoryCardRepository repository,
                                     @Qualifier(CARD_TO_FORMAT_SERVICE) CardToFormatService cardToFormatService,
-                                    @Qualifier(DIRECTORY_SERVICE) DirectoryService directoryService) {
+                                    @Qualifier(DIRECTORY_SERVICE) DirectoryService directoryService,
+                                    @Qualifier(THEME_SERVICE) CRUDService<Theme, UUID> themeService) {
         this.repository = repository;
         this.cardToFormatService = cardToFormatService;
         this.directoryService = directoryService;
+        this.themeService = themeService;
     }
 
     @Override
@@ -81,7 +90,8 @@ public class InventoryCardServiceImpl
                 creatingEntity.getInventoryNumber(),
                 creatingEntity.getInventoryNumberSuf(),
                 creatingEntity.getCardType())) {
-            throw ErrorUtils.getUnprocessableEntityException(ErrorCode.AARS_0002, creatingEntity.getInventoryNumber(), creatingEntity.getInventoryNumberSuf());
+            throw ErrorUtils.getUnprocessableEntityException(ErrorCode.AARS_0002,
+                    creatingEntity.getInventoryNumber(), creatingEntity.getInventoryNumberSuf());
         }
         return super.preCreate(creatingEntity);
     }
@@ -123,5 +133,69 @@ public class InventoryCardServiceImpl
     @Transactional(readOnly = true)
     public Boolean getExistsInventoryCard(UUID id, Integer inventoryNumber, String inventoryNumberSuf, Integer cardType) {
         return repository.getExistsInventoryCard(id, inventoryNumber, inventoryNumberSuf, cardType);
+    }
+
+    @Override
+    @Transactional
+    public Collection<UUID> getPathToInventoryCard(UUID inventoryCardId) {
+        InventoryCard inventoryCard = getById(inventoryCardId);
+        List<Directory> pathToTheme = directoryService.getPathToTheme(inventoryCard.getDirectoryId());
+        List<UUID> path = new ArrayList<>();
+        for (int i = pathToTheme.size() - 1; i >= 0; i--) {
+            path.add(pathToTheme.get(i).getId());
+        }
+        path.add(inventoryCard.getThemeId());
+        return path;
+    }
+
+    @Override
+    @Transactional
+    public TreeWithOpenedBranchResult getTreeWithOpenedBranch(UUID inventoryCardId) {
+        Collection<Theme> themeList = themeService.getAll();
+        if (themeList == null) {
+            return null;
+        }
+        TreeWithOpenedBranchResult result = new TreeWithOpenedBranchResult(themeList, inventoryCardId);
+        InventoryCard inventoryCard = getById(inventoryCardId);
+        result.getOpen().add(inventoryCard.getThemeId());
+        List<Directory> pathToTheme = directoryService.getPathToTheme(inventoryCard.getDirectoryId());
+        for (Theme theme : themeList) {
+            if (theme.getId().equals(inventoryCard.getThemeId())) {
+                theme.setChildren(directoryService.getAllByThemeId(theme.getId()));
+                unrollChildren(theme.getChildren(),
+                        pathToTheme.listIterator(pathToTheme.size()),
+                        result);
+                break;
+            }
+        }
+        return result;
+    }
+
+    @Transactional
+    private void unrollChildren(List<Directory> parentDirectories,
+                                ListIterator<Directory> iterator,
+                                TreeWithOpenedBranchResult result) {
+        if (!iterator.hasPrevious() || parentDirectories == null || parentDirectories.isEmpty()) {
+            return;
+        }
+        Directory parent = null;
+        UUID parentId = iterator.previous().getId();
+        result.getOpen().add(parentId);
+        for (Directory directory : parentDirectories) {
+            if (directory.getId().equals(parentId)) {
+                parent = directory;
+                break;
+            }
+        }
+        List<Directory> childDirectoryList = directoryService.getAllByDirectoryId(parent.getId());
+        if (childDirectoryList != null) {
+            parent.setChildDirectoryList(childDirectoryList);
+            unrollChildren(childDirectoryList, iterator, result);
+        }
+        List<InventoryCard> childInventoryCardList = getAllByDirectoryId(parent.getId());
+        if (childInventoryCardList != null) {
+            parent.setChildInventoryCardList(childInventoryCardList);
+        }
+
     }
 }

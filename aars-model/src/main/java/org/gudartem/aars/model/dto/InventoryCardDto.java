@@ -1,5 +1,6 @@
 package org.gudartem.aars.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.gudartem.aars.model.abstraction.BaseThemeIdDto;
 
 import java.time.OffsetDateTime;
@@ -235,5 +236,20 @@ public class InventoryCardDto extends BaseThemeIdDto<UUID> {
     public void setFormatSet(Set<FormatDto> formatSet) {
         this.formatSet = formatSet;
         addNullField(FORMAT_SET, formatSet);
+    }
+
+    @JsonProperty(value = "isInventoryCard", access = JsonProperty.Access.READ_ONLY)
+    public Boolean getIsInventoryCard() {
+        return Boolean.TRUE;
+    }
+
+    @JsonProperty(value = "name", access = JsonProperty.Access.READ_ONLY)
+    public String getName() {
+        return getCardName() + " " + getDesignation();
+    }
+
+    @JsonProperty(value = "isTdCard", access = JsonProperty.Access.READ_ONLY)
+    public Boolean getIsTdCard() {
+        return Integer.valueOf(2).equals(getCardType());
     }
 }

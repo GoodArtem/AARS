@@ -1,11 +1,15 @@
 package org.gudartem.aars.impl.repository;
 
-import org.gudartem.aars.api.repository.HasInventoryCardIdRepository;
+import org.gudartem.aars.api.constants.BusinessConstants;
+import org.gudartem.aars.api.repository.StocktakingRepository;
 import org.gudartem.aars.api.repository.TableDescriptor;
 import org.gudartem.aars.db.model.entity.Stocktaking;
+import org.jooq.Condition;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +26,9 @@ import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.DATE_CHANGING;
 import static org.gudartem.aars.model.PojoFieldNames.Stocktaking.DOC_NUMBER;
 
 @Repository(STOCKTAKING_REPOSITORY)
-public class StocktakingRepository
+public class StocktakingRepositoryImpl
         extends BaseRepository<Stocktaking, UUID>
-        implements HasInventoryCardIdRepository<Stocktaking, UUID> {
+        implements StocktakingRepository {
 
     private TableDescriptor tableDescriptor;
 
@@ -53,7 +57,32 @@ public class StocktakingRepository
     }
 
     @Override
+    @Transactional
     public List<Stocktaking> getAllByInvCardId(UUID inventoryCardId) {
         return findAll(STOCKTAKING.CHANGING.asc(), STOCKTAKING.INVENTORY_CARD_ID.eq(inventoryCardId));
+    }
+
+    @Override
+    @Transactional
+    public boolean newStocktakingAlreadyExists(UUID stocktakingId, UUID inventoryCardId) {
+        TableDescriptor descriptor = getTableDescriptor();
+        Condition condition = (stocktakingId == null ? STOCKTAKING.ID.isNotNull() : STOCKTAKING.ID.ne(stocktakingId))
+                .and(STOCKTAKING.INVENTORY_CARD_ID.eq(inventoryCardId))
+                .and(STOCKTAKING.CHANGED_SHEETS.equalIgnoreCase(BusinessConstants.NEW_STOCKTAKING));
+
+        int count = getContext().fetchCount(descriptor.getTable(), condition);
+        return count > 0;
+    }
+
+    @Override
+    @Transactional
+    public boolean newStocktakingHasIncorrectDate(UUID stocktakingId, UUID inventoryCardId, OffsetDateTime date) {
+        TableDescriptor descriptor = getTableDescriptor();
+        Condition condition = (stocktakingId == null ? STOCKTAKING.ID.isNotNull() : STOCKTAKING.ID.ne(stocktakingId))
+                .and(STOCKTAKING.INVENTORY_CARD_ID.eq(inventoryCardId))
+                .and(STOCKTAKING.DATE_CHANGING.le(date));
+
+        int count = getContext().fetchCount(descriptor.getTable(), condition);
+        return count > 0;
     }
 }

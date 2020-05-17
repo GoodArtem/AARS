@@ -18,6 +18,8 @@ public interface CRUDService<E extends HasId<ID>, ID extends Serializable> {
 
     E create(E entityToCreate);
 
+    Collection<E> bulkCreate(Collection<E> entitiesToCreate);
+
     E patch(E entityToPatch);
 
     void delete(ID id);

@@ -17,7 +17,7 @@ public class JacksonConfig {
     @ConditionalOnMissingBean
     public Jackson2ObjectMapperBuilderCustomizer commonJacksonCustomizer() {
         return builder -> {
-            builder.serializationInclusion(JsonInclude.Include.NON_EMPTY);
+            builder.serializationInclusion(JsonInclude.Include.NON_NULL);
             builder.featuresToDisable(WRITE_DATES_AS_TIMESTAMPS, ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
             builder.modulesToInstall(new Jdk8Module(), new JavaTimeModule());
         };

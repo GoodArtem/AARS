@@ -5,8 +5,11 @@ import org.gudartem.aars.db.model.abstraction.AbstractHasId;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.gudartem.aars.db.constants.ColumnName.Theme.ARCHIVE_DATE;
@@ -30,6 +33,13 @@ public class Theme extends AbstractHasId<UUID> {
 
     @Column(name = HAS_CHANGES)
     private String hasChanges;
+
+    @Transient
+    private List<Directory> children;
+
+    public Theme() {
+        this.children = new ArrayList<>();
+    }
 
     public String getThemeName() {
         return themeName;
@@ -61,5 +71,13 @@ public class Theme extends AbstractHasId<UUID> {
 
     public void setHasChanges(String hasChanges) {
         this.hasChanges = hasChanges;
+    }
+
+    public List<Directory> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Directory> children) {
+        this.children = children;
     }
 }

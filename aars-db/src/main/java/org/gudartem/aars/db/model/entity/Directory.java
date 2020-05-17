@@ -5,6 +5,8 @@ import org.gudartem.aars.db.model.abstraction.AbstractHasThemeId;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.List;
 import java.util.UUID;
 
 import static org.gudartem.aars.db.constants.ColumnName.Directory.DIRECTORY_NAME;
@@ -25,6 +27,12 @@ public class Directory extends AbstractHasThemeId<UUID> {
 
     @Column(name = PARENT_ID, columnDefinition = UUID_TYPE)
     private UUID parentId;
+
+    @Transient
+    private List<Directory> childDirectoryList;
+
+    @Transient
+    private List<InventoryCard> childInventoryCardList;
 
     public String getDirectoryName() {
         return directoryName;
@@ -48,5 +56,21 @@ public class Directory extends AbstractHasThemeId<UUID> {
 
     public void setParentId(UUID parentId) {
         this.parentId = parentId;
+    }
+
+    public List<Directory> getChildDirectoryList() {
+        return childDirectoryList;
+    }
+
+    public void setChildDirectoryList(List<Directory> childDirectoryList) {
+        this.childDirectoryList = childDirectoryList;
+    }
+
+    public List<InventoryCard> getChildInventoryCardList() {
+        return childInventoryCardList;
+    }
+
+    public void setChildInventoryCardList(List<InventoryCard> childInventoryCardList) {
+        this.childInventoryCardList = childInventoryCardList;
     }
 }
