@@ -6,6 +6,7 @@ import org.gudartem.aars.db.model.entity.InventoryCard;
 import org.jooq.Field;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +84,15 @@ public class InventoryCardRepositoryImpl
 
     @Override
     public List<InventoryCard> getAllByThemeId(UUID themeId) {
-        return findAll(INVENTORY_CARD.THEME_ID.eq(themeId));
+        return getAllByThemeId(themeId, null);
+    }
+
+    @Override
+    public List<InventoryCard> getAllByThemeId(UUID themeId, Integer cardType) {
+        return findAll(INVENTORY_CARD.THEME_ID.eq(themeId),
+                cardType != null
+                        ? INVENTORY_CARD.CARD_TYPE.eq(cardType)
+                        : INVENTORY_CARD.ID.isNotNull());
     }
 
     @Override
@@ -112,5 +121,15 @@ public class InventoryCardRepositoryImpl
                         .and(id == null
                                 ? INVENTORY_CARD.ID.isNotNull()
                                 : INVENTORY_CARD.ID.notEqual(id)));
+    }
+
+    @Override
+    public List<InventoryCard> getInventoryCardBySearchString(String searchString) {
+        return getContext().selectFrom(getTableDescriptor().getTable())
+                .where(INVENTORY_CARD.INVENTORY_NUMBER.like(searchString)
+                        .or(INVENTORY_CARD.DESIGNATION.like(searchString))
+                        .or(INVENTORY_CARD.CIPHER.like(searchString))
+                        .or(INVENTORY_CARD.CARD_NAME.like(searchString))).orderBy(INVENTORY_CARD.CARD_NAME.asc())
+                .fetchInto(getTableDescriptor().getEntityType());
     }
 }

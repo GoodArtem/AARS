@@ -4,6 +4,7 @@ import org.gudartem.aars.api.model.TreeWithOpenedBranchResult;
 import org.gudartem.aars.db.model.entity.InventoryCard;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public interface InventoryCardService extends HasDirectoryIdService<InventoryCard, UUID> {
@@ -14,4 +15,10 @@ public interface InventoryCardService extends HasDirectoryIdService<InventoryCar
     Collection<UUID> getPathToInventoryCard(UUID inventoryCardId);
 
     TreeWithOpenedBranchResult getTreeWithOpenedBranch(UUID inventoryCardId);
+
+    List<InventoryCard> getAllByThemeIdWithLastChange(UUID themeId, Integer cardType);
+
+    List<InventoryCard> getAllByDirectoryIdWithLastChange(UUID directoryId);
+
+    Collection<InventoryCard> getInventoryCardBySearchString(String searchString);
 }

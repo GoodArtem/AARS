@@ -7,9 +7,11 @@ import org.gudartem.aars.api.repository.InventoryCardRepository;
 import org.gudartem.aars.api.repository.Repository;
 import org.gudartem.aars.api.service.CRUDService;
 import org.gudartem.aars.api.service.DirectoryService;
+import org.gudartem.aars.api.service.HasInventoryCardIdService;
 import org.gudartem.aars.api.service.InventoryCardService;
 import org.gudartem.aars.db.model.entity.Directory;
 import org.gudartem.aars.db.model.entity.InventoryCard;
+import org.gudartem.aars.db.model.entity.Stocktaking;
 import org.gudartem.aars.db.model.entity.Theme;
 import org.gudartem.aars.impl.service.abstraction.CRUDServiceUUIDImpl;
 import org.gudartem.aars.impl.service.internal.CardToFormatService;
@@ -27,6 +29,7 @@ import static org.gudartem.aars.api.repository.RepositoryName.INVENTORY_CARD_REP
 import static org.gudartem.aars.api.service.ServiceName.CARD_TO_FORMAT_SERVICE;
 import static org.gudartem.aars.api.service.ServiceName.DIRECTORY_SERVICE;
 import static org.gudartem.aars.api.service.ServiceName.INVENTORY_CARD_SERVICE;
+import static org.gudartem.aars.api.service.ServiceName.STOCKTAKING_SERVICE;
 import static org.gudartem.aars.api.service.ServiceName.THEME_SERVICE;
 import static org.gudartem.aars.model.PojoFieldNames.InventoryCard.FORMAT_SET;
 
@@ -43,14 +46,18 @@ public class InventoryCardServiceImpl
 
     private CRUDService<Theme, UUID> themeService;
 
+    private HasInventoryCardIdService<Stocktaking, UUID> stocktakingService;
+
     public InventoryCardServiceImpl(@Qualifier(INVENTORY_CARD_REPOSITORY) InventoryCardRepository repository,
                                     @Qualifier(CARD_TO_FORMAT_SERVICE) CardToFormatService cardToFormatService,
                                     @Qualifier(DIRECTORY_SERVICE) DirectoryService directoryService,
-                                    @Qualifier(THEME_SERVICE) CRUDService<Theme, UUID> themeService) {
+                                    @Qualifier(THEME_SERVICE) CRUDService<Theme, UUID> themeService,
+                                    @Qualifier(STOCKTAKING_SERVICE) HasInventoryCardIdService<Stocktaking, UUID> stocktakingService) {
         this.repository = repository;
         this.cardToFormatService = cardToFormatService;
         this.directoryService = directoryService;
         this.themeService = themeService;
+        this.stocktakingService = stocktakingService;
     }
 
     @Override
@@ -67,11 +74,46 @@ public class InventoryCardServiceImpl
 
     @Override
     @Transactional(readOnly = true)
+    public List<InventoryCard> getAllByThemeIdWithLastChange(UUID themeId, Integer cardType) {
+        List<InventoryCard> result = repository.getAllByThemeId(themeId, cardType);
+        if (result != null && !result.isEmpty()) {
+            for (InventoryCard e : result) {
+                postOperationEnrich(e);
+                List<Stocktaking> stocktakingList = stocktakingService.getAllByInvCardId(e.getId());
+                if (stocktakingList != null && !stocktakingList.isEmpty()) {
+                    Stocktaking lastChange = stocktakingList.get(stocktakingList.size() - 1);
+                    e.setLastChanging(lastChange.getChanging());
+                    e.setDateLastChange(lastChange.getDateChanging());
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<InventoryCard> getAllByDirectoryId(UUID directoryId) {
         List<InventoryCard> result = repository.getAllByDirectoryId(directoryId);
         if (result != null && !result.isEmpty()) {
             for (InventoryCard e : result) {
                 postOperationEnrich(e);
+            }
+        }
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public List<InventoryCard> getAllByDirectoryIdWithLastChange(UUID directoryId) {
+        List<InventoryCard> result = repository.getAllByDirectoryId(directoryId);
+        if (result != null && !result.isEmpty()) {
+            for (InventoryCard e : result) {
+                postOperationEnrich(e);
+                List<Stocktaking> stocktakingList = stocktakingService.getAllByInvCardId(e.getId());
+                if (stocktakingList != null && !stocktakingList.isEmpty()) {
+                    Stocktaking lastChange = stocktakingList.get(stocktakingList.size() - 1);
+                    e.setLastChanging(lastChange.getChanging());
+                    e.setDateLastChange(lastChange.getDateChanging());
+                }
             }
         }
         return result;
@@ -166,6 +208,18 @@ public class InventoryCardServiceImpl
                         pathToTheme.listIterator(pathToTheme.size()),
                         result);
                 break;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<InventoryCard> getInventoryCardBySearchString(String searchString) {
+        List<InventoryCard> result = repository.getInventoryCardBySearchString(searchString);
+        if (result != null && !result.isEmpty()) {
+            for (InventoryCard e : result) {
+                postOperationEnrich(e);
             }
         }
         return result;

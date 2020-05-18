@@ -84,9 +84,20 @@ public class InventoryCardController {
         return mapper.toCollectionDto(service.getAllByThemeId(themeId));
     }
 
+    @GetMapping("/getAllByThemeIdWithLastChange/{themeId}")
+    public Collection<InventoryCardDto> getAllByThemeIdWithLastChange(@PathVariable UUID themeId,
+                                                                      @RequestParam Integer cardType) {
+        return mapper.toCollectionDto(service.getAllByThemeIdWithLastChange(themeId, cardType));
+    }
+
     @GetMapping("/getByDirectory/{directoryId}")
     public Collection<InventoryCardDto> getAllByDirectory(@PathVariable UUID directoryId) {
         return mapper.toCollectionDto(service.getAllByDirectoryId(directoryId));
+    }
+
+    @GetMapping("/getAllByDirectoryIdWithLastChange/{directoryId}")
+    public Collection<InventoryCardDto> getAllByDirectoryIdWithLastChange(@PathVariable UUID directoryId) {
+        return mapper.toCollectionDto(service.getAllByDirectoryIdWithLastChange(directoryId));
     }
 
     @GetMapping("/getNextSequenceInventoryNumber")
@@ -118,6 +129,11 @@ public class InventoryCardController {
         }
         response.getActive().add(new BaseDto<>(result.getActive()));
         return response;
+    }
+
+    @GetMapping("/getInventoryCardBySearchString")
+    public Collection<InventoryCardDto> getInventoryCardBySearchString(@RequestParam String searchString) {
+        return mapper.toCollectionDto(service.getInventoryCardBySearchString(searchString));
     }
 
     @GetMapping("/downloadPdf/{id}")

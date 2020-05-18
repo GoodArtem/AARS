@@ -59,7 +59,7 @@ public class StocktakingRepositoryImpl
     @Override
     @Transactional
     public List<Stocktaking> getAllByInvCardId(UUID inventoryCardId) {
-        return findAll(STOCKTAKING.CHANGING.asc(), STOCKTAKING.INVENTORY_CARD_ID.eq(inventoryCardId));
+        return findAll(STOCKTAKING.DATE_CHANGING.asc(), STOCKTAKING.INVENTORY_CARD_ID.eq(inventoryCardId));
     }
 
     @Override

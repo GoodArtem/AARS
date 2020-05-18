@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -99,6 +100,12 @@ public class InventoryCard extends AbstractHasThemeId<UUID> {
             joinColumns = { @JoinColumn(name = INVENTORY_CARD_ID)},
             inverseJoinColumns = { @JoinColumn(name = FORMAT_ID)})
     private Set<Format> formatSet;
+
+    @Transient
+    private OffsetDateTime dateLastChange;
+
+    @Transient
+    private String lastChanging;
 
     public Integer getInventoryNumber() {
         return inventoryNumber;
@@ -250,5 +257,21 @@ public class InventoryCard extends AbstractHasThemeId<UUID> {
 
     public void setFormatSet(Set<Format> formatSet) {
         this.formatSet = formatSet;
+    }
+
+    public OffsetDateTime getDateLastChange() {
+        return dateLastChange;
+    }
+
+    public void setDateLastChange(OffsetDateTime dateLastChange) {
+        this.dateLastChange = dateLastChange;
+    }
+
+    public String getLastChanging() {
+        return lastChanging;
+    }
+
+    public void setLastChanging(String lastChanging) {
+        this.lastChanging = lastChanging;
     }
 }

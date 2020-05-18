@@ -67,6 +67,10 @@ public class InventoryCardDto extends BaseThemeIdDto<UUID> {
 
     private Set<FormatDto> formatSet;
 
+    private OffsetDateTime dateLastChange;
+
+    private String lastChanging;
+
     public Integer getInventoryNumber() {
         return inventoryNumber;
     }
@@ -238,6 +242,22 @@ public class InventoryCardDto extends BaseThemeIdDto<UUID> {
         addNullField(FORMAT_SET, formatSet);
     }
 
+    public OffsetDateTime getDateLastChange() {
+        return dateLastChange;
+    }
+
+    public void setDateLastChange(OffsetDateTime dateLastChange) {
+        this.dateLastChange = dateLastChange;
+    }
+
+    public String getLastChanging() {
+        return lastChanging;
+    }
+
+    public void setLastChanging(String lastChanging) {
+        this.lastChanging = lastChanging;
+    }
+
     @JsonProperty(value = "isInventoryCard", access = JsonProperty.Access.READ_ONLY)
     public Boolean getIsInventoryCard() {
         return Boolean.TRUE;
@@ -251,5 +271,14 @@ public class InventoryCardDto extends BaseThemeIdDto<UUID> {
     @JsonProperty(value = "isTdCard", access = JsonProperty.Access.READ_ONLY)
     public Boolean getIsTdCard() {
         return Integer.valueOf(2).equals(getCardType());
+    }
+
+    @JsonProperty(value = "fullInventoryNumber", access = JsonProperty.Access.READ_ONLY)
+    public String getFullInventoryNumber() {
+        String result = getInventoryNumber().toString();
+        if (getInventoryNumberSuf() != null) {
+            result = result + " " + getInventoryNumberSuf();
+        }
+        return result;
     }
 }
