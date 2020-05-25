@@ -85,4 +85,17 @@ public class StocktakingRepositoryImpl
         int count = getContext().fetchCount(descriptor.getTable(), condition);
         return count > 0;
     }
+
+    @Override
+    @Transactional
+    public boolean stocktakingHasIncorrectDate(UUID stocktakingId, UUID inventoryCardId, OffsetDateTime date) {
+        TableDescriptor descriptor = getTableDescriptor();
+        Condition condition = (stocktakingId == null ? STOCKTAKING.ID.isNotNull() : STOCKTAKING.ID.ne(stocktakingId))
+                .and(STOCKTAKING.INVENTORY_CARD_ID.eq(inventoryCardId))
+                .and(STOCKTAKING.DATE_CHANGING.ge(date))
+                .and(STOCKTAKING.CHANGED_SHEETS.equalIgnoreCase(BusinessConstants.NEW_STOCKTAKING));
+
+        int count = getContext().fetchCount(descriptor.getTable(), condition);
+        return count > 0;
+    }
 }

@@ -9,4 +9,6 @@ public interface StocktakingRepository extends HasInventoryCardIdRepository<Stoc
     boolean newStocktakingAlreadyExists(UUID stocktakingId, UUID inventoryCardId);
 
     boolean newStocktakingHasIncorrectDate(UUID stocktakingId, UUID inventoryCardId, OffsetDateTime date);
+
+    boolean stocktakingHasIncorrectDate(UUID stocktakingId, UUID inventoryCardId, OffsetDateTime date);
 }

@@ -10,6 +10,7 @@ import org.gudartem.aars.model.abstraction.BaseDto;
 import org.gudartem.aars.model.dto.InventoryCardDto;
 import org.gudartem.aars.model.dto.ThemeDto;
 import org.gudartem.aars.model.request.SearchRequestParams;
+import org.gudartem.aars.model.request.SearchString;
 import org.gudartem.aars.web.model.TreeWithOpenedBranchResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -131,9 +132,9 @@ public class InventoryCardController {
         return response;
     }
 
-    @GetMapping("/getInventoryCardBySearchString")
-    public Collection<InventoryCardDto> getInventoryCardBySearchString(@RequestParam String searchString) {
-        return mapper.toCollectionDto(service.getInventoryCardBySearchString(searchString));
+    @PostMapping("/getInventoryCardBySearchString")
+    public Collection<InventoryCardDto> getInventoryCardBySearchString(@RequestBody SearchString searchString) {
+        return mapper.toCollectionDto(service.getInventoryCardBySearchString(searchString.getSearchString()));
     }
 
     @GetMapping("/downloadPdf/{id}")

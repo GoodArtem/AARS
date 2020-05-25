@@ -72,18 +72,23 @@ public class StocktakingServiceImpl
 
     @Transactional
     private void validate(Stocktaking creatingOrUpdatingEntity) {
-        if (!NEW_STOCKTAKING.equalsIgnoreCase(creatingOrUpdatingEntity.getChangedSheets())) {
-            return;
+        if (NEW_STOCKTAKING.equalsIgnoreCase(creatingOrUpdatingEntity.getChangedSheets())) {
+            if (repository.newStocktakingAlreadyExists(creatingOrUpdatingEntity.getId(),
+                    creatingOrUpdatingEntity.getInventoryCardId())) {
+                throw ErrorUtils.getUnprocessableEntityException(ErrorCode.AARS_0003);
+            }
+            if (repository.newStocktakingHasIncorrectDate(creatingOrUpdatingEntity.getId(),
+                    creatingOrUpdatingEntity.getInventoryCardId(), creatingOrUpdatingEntity.getDateChanging())) {
+                throw ErrorUtils.getUnprocessableEntityException(ErrorCode.AARS_0004);
+            }
+
+            creatingOrUpdatingEntity.setChangedSheets(NEW_STOCKTAKING);
+        } else {
+            if (repository.stocktakingHasIncorrectDate(creatingOrUpdatingEntity.getId(),
+                    creatingOrUpdatingEntity.getInventoryCardId(), creatingOrUpdatingEntity.getDateChanging())) {
+                throw ErrorUtils.getUnprocessableEntityException(ErrorCode.AARS_0005);
+            }
         }
-        if (repository.newStocktakingAlreadyExists(creatingOrUpdatingEntity.getId(),
-                creatingOrUpdatingEntity.getInventoryCardId())) {
-            throw ErrorUtils.getUnprocessableEntityException(ErrorCode.AARS_0003);
-        }
-        if (repository.newStocktakingHasIncorrectDate(creatingOrUpdatingEntity.getId(),
-                creatingOrUpdatingEntity.getInventoryCardId(), creatingOrUpdatingEntity.getDateChanging())) {
-            throw ErrorUtils.getUnprocessableEntityException(ErrorCode.AARS_0004);
-        }
-        creatingOrUpdatingEntity.setChangedSheets(NEW_STOCKTAKING);
     }
 
     @Override
